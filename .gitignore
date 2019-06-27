@@ -1,0 +1,16 @@
+.DS_Store
+node_modules/
+dist/
+***/*.log
+
+# Editor direcctories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.local
+
+yarn.lock
+package-lock.json
