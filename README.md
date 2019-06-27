@@ -2,7 +2,7 @@
 
 ## 目录
 
-###1. webpack配置
+### 1. webpack配置
 
 	1. 安装webpack
 		
@@ -41,7 +41,7 @@
 		npm run build:stage
 
 
-###2. 配置Loader
+### 2. 配置Loader
 
 	1. 处理css loader
 
@@ -75,7 +75,7 @@
 
 		2. 添加webpack加载器配置
 
-###3. 引入babel
+### 3. 引入babel
 
 	1. 说明作用
 	
@@ -125,7 +125,7 @@
 		我们之前使用的babel，babel-loader 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译。如果想使用这些新的对象和方法，必须使用 babel-polyfill，为当前环境提供一个垫片。	
 
 
-###4. 管理输出
+### 4. 管理输出
 
 	1. 添加 HtmlWebpackPlugin 插件
 
@@ -136,7 +136,7 @@
 		npm i clean-webpack-plugin -D
 
 
-###5. 使用webpack-dev-server
+### 5. 使用webpack-dev-server
 
 	1. 安装
 
@@ -150,12 +150,12 @@
 		new webpack.HotModuleReplacementPlugin(),
 
 
-###6. 添加离线服务器
+### 6. 添加离线服务器
 
 	npm i http-server -D
 
 
-###7. 安装React
+### 7. 安装React
 
 	1. 安装
 
