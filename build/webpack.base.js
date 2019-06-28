@@ -63,7 +63,7 @@ module.exports = {
 		// 模块别名列表
 		alias: {
 			"module": path.resolve(__dirname,'..','node_modules'),
-			"@": path.resolve(__dirname,'..',"src")
+			"@": path.resolve(__dirname,'..',"src"),
 		}
   },
   // 告知 webpack 为目标(target)指定一个环境

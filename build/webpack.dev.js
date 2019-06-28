@@ -15,7 +15,7 @@ const config = {
     // 定一个创建后超过 250kb 的资源，将展示一条警告
     hints: 'warning',
   },
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   // 配置本地服务
   devServer: {
     // 本地服务器所加载的页面所载的目录
@@ -31,7 +31,7 @@ const config = {
     // 热更新
     hot: true,
     // 自动打开浏览器
-    open: true,
+    // open: true,
     // 服务器压缩
     compress: true,
   },
@@ -63,8 +63,6 @@ const config = {
             options: {
               // 指定启用css modules
               modules: true,
-              // 指定css的类名格式
-              localIdentName: '[local]_[sha1:has:base645]',
               importLoaders: 2
             }
           },
