@@ -6,7 +6,7 @@ import Router from './routes'
 import '@/styles/index.scss'
 
 ReactDom.render(
-  <Provider store={store}>
+  <Provider store={store()}>
     <Router />
   </Provider>  
 ,document.querySelector('#root'));

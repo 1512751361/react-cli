@@ -7,16 +7,21 @@ import {
 import Index from '@/pages/index'
 import Error404 from '@/pages/404'
 
-const routes = [
+import App from '@/redux/components/App'
+
+export const routes = [
   {
-    path: '/',
-    exact: true,
-    component: Index
+    path: '/index',
+    component: App
   },
   {
     path: '/404',
     component: Error404
-  }
+  },
+  {
+    path: '/',
+    component: Index
+  },
 ];
 
 export default class Router extends PureComponent {
