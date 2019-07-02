@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import style from './style.scss';
 import pic404 from './images/404.png';
-console.log(style)
 
 export default class Erorr404 extends PureComponent {
   render() {

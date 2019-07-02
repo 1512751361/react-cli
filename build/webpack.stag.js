@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const baseConfig = require('./webpack.base.js');
-const { stagProcessEnv } = require('../config/process.env')
+const { stagProcessEnv } = require('../config/process.env');
 
 const config = {
   /**
@@ -26,7 +26,8 @@ const config = {
   // 配置如何展示性能提示
   performance: {
     // 定一个创建超过 250kb 的资源，将展示一条错误
-    hints: 'error'
+    // hints: 'error',    
+    hints: false,    
   },
   // 加载资源
   module: {
@@ -35,12 +36,7 @@ const config = {
         test: /\.css$/,
         include: /node_modules/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              outputPath: 'static/css/'
-            }
-          },
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
@@ -53,17 +49,11 @@ const config = {
         test: /\.(css|scss|sass)$/,
         exclude: /node_modules/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              outputPath: 'static/css/'
-            }
-          },
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[local]_[hash:base64:5]',
               importLoaders: 2,
             }
           },
@@ -131,21 +121,27 @@ const config = {
       name: true,
       cacheGroups: {
         styles: {
-          name: 'styles',
-          test: /\.css$/,
+          name: 'static/css/chunk-styles',
+          test: /\.(css|scss|sass)$/,
           chunks: 'all',
           enforce: true
         },
         commons: {
-          name: 'chunk-commons',
+          name: 'static/js/chunk-commons',
           test: path.join(__dirname,'..','src/components'),
           minChunks: 3,
           priority: 5,
           reuseExistingChunk: true,
         },
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'static/js/chunk-react',
+          priority: 20
+        },
         vendors: {
+          name: 'static/js/chunk-libs',
           test: /[\\/]node_modules[\\/]/,
-          priority: -10
+          priority: 10
         },
         default: {
           minChunks: 2,
@@ -159,13 +155,11 @@ const config = {
   plugins: [
     new webpack.HashedModuleIdsPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].[hash:8].css',
-      chunkFilename: '[id].[hash:8].css'
+      filename: 'static/css/[name].[hash:8].css',
+      chunkFilename: 'static/css/[id].[hash:8].css'
     }),
     new webpack.DefinePlugin({
-			'process.env': {
-        ...stagProcessEnv
-			}
+      'process.env.BASE_API': JSON.stringify(stagProcessEnv.BASE_API)
 		})
   ]
 }

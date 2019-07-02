@@ -26,7 +26,8 @@ const config = {
   // 配置如何展示性能提示
   performance: {
     // 定一个创建超过 250kb 的资源，将展示一条错误
-    hints: 'error'
+    // hints: 'error',    
+    hints: false,    
   },
   // 加载资源
   module: {
@@ -120,21 +121,27 @@ const config = {
       name: true,
       cacheGroups: {
         styles: {
-          name: 'styles',
-          test: /\.css$/,
+          name: 'static/css/chunk-styles',
+          test: /\.(css|scss|sass)$/,
           chunks: 'all',
           enforce: true
         },
         commons: {
-          name: 'chunk-commons',
+          name: 'static/js/chunk-commons',
           test: path.join(__dirname,'..','src/components'),
           minChunks: 3,
           priority: 5,
           reuseExistingChunk: true,
         },
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'static/js/chunk-react',
+          priority: 20
+        },
         vendors: {
+          name: 'static/js/chunk-libs',
           test: /[\\/]node_modules[\\/]/,
-          priority: -10
+          priority: 10
         },
         default: {
           minChunks: 2,
@@ -152,9 +159,7 @@ const config = {
       chunkFilename: 'static/css/[id].[hash:8].css'
     }),
     new webpack.DefinePlugin({
-			'process.env': {
-        ...prdProcessEnv
-			}
+      'process.env.BASE_API': JSON.stringify(prdProcessEnv.BASE_API)
 		})
   ]
 }

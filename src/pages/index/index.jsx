@@ -1,7 +1,14 @@
-import React,{ PureComponent } from 'react';
+import React from 'react'
+import Footer from './components/Footer'
+import AddTodo from './containers/AddTodo'
+import VisibleTodoList from './containers/VisibleTodoList'
 
-export default class Index extends PureComponent {
-  render(){
-    return <div>It works!</div>
-  }
-}
+const App = () => (
+  <div>
+    <AddTodo />
+    <VisibleTodoList />
+    <Footer />
+  </div>
+)
+
+export default App

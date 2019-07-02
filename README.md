@@ -161,4 +161,28 @@
 
 		npm i react react-dom -S
 
-	2. 
+
+### 8. 安装react路由
+
+	1. 安装
+
+		npm i react-router react-router-dom -S
+
+	2. 创建路由配置文件 routes
+	
+	3. 添加路由配置方法 routes/index.js
+	
+	4. 创建动态创建路由对象 routes/method/dynamic-loader.js
+	
+
+### 9. 安装react-redux
+
+	1. 安装
+
+		npm i redux redux-logger redux-saga reselect -S
+
+	2. 中间件 redux-logger 打印redux跟新日志
+	
+	3. 中间件 redux-saga 处理副作用操作
+	
+	4. reselect 计算衍生数据

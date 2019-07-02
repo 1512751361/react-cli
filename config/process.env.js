@@ -1,14 +1,14 @@
 // 生产环境
 const prdProcessEnv = {
-  BASE_API: ''
+  BASE_API: './'
 }
 // 测试环境
 const stagProcessEnv = {
-  BASE_API: ''
+  BASE_API: './'
 }
 // 开发环境
 const devProcessEnv = {
-  BASE_API: ''
+  BASE_API: './'
 };
 
 module.exports = {

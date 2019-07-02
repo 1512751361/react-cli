@@ -90,9 +90,7 @@ const config = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-			'process.env': {
-        ...devProcessEnv
-			}
+			'process.env.BASE_API': JSON.stringify(devProcessEnv.BASE_API)
 		})
   ]
 }

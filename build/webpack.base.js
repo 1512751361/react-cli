@@ -63,15 +63,22 @@ module.exports = {
 		// 模块别名列表
 		alias: {
 			"module": path.resolve(__dirname,'..','node_modules'),
-			"@": path.resolve(__dirname,'..',"src"),
+      "@": path.resolve(__dirname,'..',"src"),
+      "@util": path.resolve(__dirname,'..','src/util'),
+      '@com': path.resolve(__dirname, '..', 'src/component')
 		}
   },
   // 告知 webpack 为目标(target)指定一个环境
   target: 'web',
   // 防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖(external dependencies)
 	externals: {
-		jquery: 'jQuery'
-	},
+    jquery: 'jQuery',
+  },
+  // 配置如何展示性能提示
+  performance: {
+    // 定一个创建后超过 500kb 的资源，将展示一条警告
+    maxAssetSize: 1024 * 500
+  },
   // 添加插件
   plugins: [
     new webpack.BannerPlugin('版权所有，翻版必究'),
