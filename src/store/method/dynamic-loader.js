@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import camelCase from 'lodash/camelCase';
 
 export const importDynamicSagas = () => {
 	const modules = [];
@@ -14,7 +14,7 @@ export const importDynamicReducers = () => {
 	const resolve = require.context('../../pages', true, /\/reducer.(js|ts)$/);
 	resolve.keys().forEach((key) => {
 		const basename = key.substring(key.lastIndexOf('/', key.lastIndexOf('/' - 1)), key.lastIndexOf('/'));
-		const reducerName = _.camelCase(basename);
+		const reducerName = camelCase(basename);
 		modules[reducerName] = resolve(key).default;
 	});
 	return modules;

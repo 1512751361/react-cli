@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import camelCase from 'lodash/camelCase';
 
 export const x = 2;
 
@@ -8,7 +8,7 @@ export const importDynamicRoutes = () => {
 	// console.log(resolve.keys())
 	let Index = null;
 	resolve.keys().forEach((key) => {
-		const reducerName = _.camelCase(key);
+		const reducerName = camelCase(key);
 		if (reducerName === 'index') {
 			Index = {
 				path: '/',

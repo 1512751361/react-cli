@@ -18,7 +18,7 @@ module.exports = {
 	module: {
 		// 忽略的文件中不应该含有 import, require, define 的调用，或任何其他导入机制
 		noParse(content) {
-			return /jquery|lodash/.test(content);
+			return /jquery/.test(content);
 		},
 		rules: [
 			// 加载babel

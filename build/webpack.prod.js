@@ -6,6 +6,8 @@ const merge = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // 主要用于css压缩、去重
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// 压缩js
+const TerserPlugin = require('terser-webpack-plugin');
 
 const baseConfig = require('./webpack.base.js');
 const { prdProcessEnv } = require('../config/process.env');
@@ -27,8 +29,7 @@ const config = {
 	// 配置如何展示性能提示
 	performance: {
 		// 定一个创建超过 250kb 的资源，将展示一条错误
-		// hints: 'error',
-		hints: false,
+		hints: 'error',
 	},
 	// 加载资源
 	module: {
@@ -82,6 +83,7 @@ const config = {
 	},
 	// 添加插件
 	optimization: {
+		// minimize: [],
 		minimizer: [
 			new OptimizeCSSAssetsPlugin({
 				assetNameRegExp: /\.css$/g,
@@ -99,6 +101,18 @@ const config = {
 					],
 				},
 				canPrint: true,
+			}),
+			new TerserPlugin({
+				terserOptions: {
+					compress: {
+						warnings: false,
+						drop_console: true, // console
+						drop_debugger: false,
+						pure_funcs: ['console.log'], // 移除console
+					},
+				},
+				sourceMap: false,
+				parallel: true,
 			}),
 		],
 		// 代码分离

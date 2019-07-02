@@ -10,9 +10,17 @@ import '@/styles/index.scss';
 // 创建store
 const store = configureStore();
 
-ReactDom.render(
-	<Provider store={store}>
-		<Router />
-	</Provider>,
-	document.querySelector('#root'),
-);
+const renderDom = () => {
+	ReactDom.render(
+		<Provider store={store}>
+			<Router />
+		</Provider>,
+		document.querySelector('#root'),
+	);
+};
+
+if (module.hot) {
+	// enable MHR
+	module.hot.accept('./routes', () => renderDom());
+}
+renderDom();
