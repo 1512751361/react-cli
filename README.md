@@ -1,6 +1,27 @@
 # react-cli
 
-## 目录
+## 目录结构
+
+	----build/ 				--webpack配置文件
+	----config/				--配置文件
+	----dist/				--项目打包文件
+	----node_modules/		--第三方模块	
+	----public/				--HTML模板
+	----src/				--项目目录
+		----common/			--公共模块
+		----components/		--公共组件模块
+		----pages/			--页面模块
+		----routes/			--路由配置模块
+		----store/			--redux配置模块
+		----styles/			--全局样式表模块
+		----util/			--全局方法模块
+		----index.js		--入口页面
+	----test/				--测试代码模块
+	.babelrc				--webpack babel配置文件
+	.gitignore				--git代码管理配置模块
+	package.json			--包管理
+	README.md				--说明文件
+
 
 ### 1. webpack配置
 
@@ -196,3 +217,39 @@
 		1. reducer文件必须使用在 pages 文件夹下，且文件名为reducer
 		2. saga文件必须使用在 pages 文件夹下，且文件名为 saga	
 	
+### 10. 安装axios api请求
+
+	1. 配置request.js 请求模块
+
+
+### 11. 安装eslint
+
+	1. 安装
+		
+		npm i eslint -D
+
+	2. 创建基础 .eslintrc.js
+
+		./node_modules/.bin/eslint -–init
+
+	3. 安装 babel-eslint
+
+		添加 ES2015 的语言规范的支持
+		npm i babel-eslint -D
+		在 .eslintrc.js 配置中添加
+			"parser":"babel-eslint"
+
+	4. 安装依赖包
+
+		npm i eslint-config-airbnb eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y -D
+
+		eslint-config-airbnb : 配置一些 eslint rules 的规范
+		eslint-plugin-import ：在使用 import 的时候，一些 rules 规范
+		eslint-plugin-react ： 一些 react 的 eslint 的 rules 规范
+		eslint-plugin-jsx-a11y： 一些 jsx 的 rules 规范
+
+	5. 修改 .eslintrc.js 配置
+
+		"extends":"airbnb",
+
+	6. 添加一下规则
