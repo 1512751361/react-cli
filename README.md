@@ -174,6 +174,10 @@
 	
 	4. 创建动态创建路由对象 routes/method/dynamic-loader.js
 	
+	5. 使用说明
+
+		页面路由必须是在文件夹pages下的文件或者文件夹（如果是文件夹那么这个文件夹必须含有index文件作为页面路由界面）
+	
 
 ### 9. 安装react-redux
 
@@ -186,3 +190,9 @@
 	3. 中间件 redux-saga 处理副作用操作
 	
 	4. reselect 计算衍生数据
+
+	5. 使用说明
+
+		1. reducer文件必须使用在 pages 文件夹下，且文件名为reducer
+		2. saga文件必须使用在 pages 文件夹下，且文件名为 saga	
+	
