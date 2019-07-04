@@ -2,10 +2,9 @@ import React, { PureComponent } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import {
 	renderRoutes,
-	rootRoutes,
-} from './method';
+} from '@util/routeUtil';
 
-console.log(rootRoutes);
+import { rootRoutes } from './method/dynamic-loader';
 
 export const routes = rootRoutes;
 
@@ -14,7 +13,7 @@ export default class Router extends PureComponent {
 		return (
 			<BrowserRouter>
 				<Switch>
-					{renderRoutes(rootRoutes)}
+					{renderRoutes(routes)}
 				</Switch>
 			</BrowserRouter>
 		);

@@ -1,22 +1,25 @@
-import camelCase from 'lodash/camelCase';
-
-export const x = 2;
+import compact from 'lodash/compact';
 
 export const importDynamicRoutes = () => {
 	const routes = [];
 	const resolve = require.context('../../pages', true, /^\.\/([0-9a-zA-Z_]+)$/);
-	// console.log(resolve.keys())
+	// console.log(resolve.keys());
 	let Index = null;
 	resolve.keys().forEach((key) => {
-		const reducerName = camelCase(key);
-		if (reducerName === 'index') {
+		let newKey = [key.substring(1).toLowerCase()];
+		if (/@/.test(newKey)) {
+			newKey = compact(key.split('@'));
+		}
+		const reducerName = newKey[0];
+		const path = newKey.join('/:');
+		if (reducerName === '/index') {
 			Index = {
 				path: '/',
 				component: resolve(key).default,
 			};
 		} else {
 			routes.push({
-				path: `/${reducerName}`,
+				path,
 				component: resolve(key).default,
 			});
 		}
@@ -26,3 +29,6 @@ export const importDynamicRoutes = () => {
 	}
 	return routes;
 };
+
+
+export const rootRoutes = importDynamicRoutes();

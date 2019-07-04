@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { addTodo, sumCount } from '../actions';
 
 const AddTodo = ({ dispatch }) => {
@@ -31,6 +32,9 @@ const AddTodo = ({ dispatch }) => {
 					{'Add Count'}
 				</button>
 			</form>
+			<a href="/404">404</a>
+			<br />
+			<Link to="/404">404-2</Link>
 		</div>
 	);
 };

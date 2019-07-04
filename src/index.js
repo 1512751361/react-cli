@@ -24,3 +24,5 @@ if (module.hot) {
 	module.hot.accept('./routes', () => renderDom());
 }
 renderDom();
+
+// import '../test/huge-apps/App';
