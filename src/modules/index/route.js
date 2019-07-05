@@ -10,6 +10,9 @@ export default {
 	path: '/',
 	component: Nav,
 	isChild: true,
+	meta: {
+		roles: ['clientLogin:list'],
+	},
 	childRoutes: [{
 		exact: true,
 		path: '/',
