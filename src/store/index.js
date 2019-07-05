@@ -34,6 +34,6 @@ export default (preloadedState) => {
 		module.hot.accept('./reducers', () => store.replaceReducer(rootReducer));
 	}
 	// 运行saga
-	store.asyncTask = sagaMiddleware.run(rootSaga).done;
+	store.asyncTask = sagaMiddleware.run(rootSaga, { a: 1 }).done;
 	return store;
 };

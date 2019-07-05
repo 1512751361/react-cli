@@ -10,7 +10,7 @@
 	----src/				--项目目录
 		----common/			--公共模块
 		----components/			--公共组件模块
-		----pages/			--页面模块
+		----modules/			--页面模块
 		----routes/			--路由配置模块
 		----store/			--redux配置模块
 		----styles/			--全局样式表模块
@@ -194,11 +194,12 @@
 	
 	3. 添加路由配置方法 routes/index.js
 	
-	4. 创建动态创建路由对象 routes/method/dynamic-loader.js
+	4. 创建动态引入创建路由对象 routes/method/dynamic-loader.js
 	
 	5. 使用说明
 
-		页面路由必须是在文件夹pages下的文件或者文件夹（如果是文件夹那么这个文件夹必须含有index文件作为页面路由界面）
+		1. 页面路由必须写在 modules/ 模块下
+		2. 如果改页面要成为主路由，需要添加 route.js 创建子模块路由对象
 	
 
 ### 9. 安装react-redux
@@ -215,8 +216,8 @@
 
 	5. 使用说明
 
-		1. reducer文件必须使用在 pages 文件夹下，且文件名为reducer
-		2. saga文件必须使用在 pages 文件夹下，且文件名为 saga	
+		1. reducer文件必须使用在 modules/ 模块下，且文件名为 reducer
+		2. saga文件必须使用在 modules/ 模块下，且文件名为 saga	
 	
 ### 10. 安装axios api请求
 

@@ -1,32 +1,22 @@
-import compact from 'lodash/compact';
-
 export const importDynamicRoutes = () => {
-	const routes = [];
-	const resolve = require.context('../../pages', true, /^\.\/([0-9a-zA-Z_]+)$/);
-	// console.log(resolve.keys());
-	let Index = null;
-	resolve.keys().forEach((key) => {
-		let newKey = [key.substring(1).toLowerCase()];
-		if (/@/.test(newKey)) {
-			newKey = compact(key.split('@'));
+	const resolve = require.context('../../modules', true, /^\.\/((?!\/)[\s\S])+\/route\.js$/);
+	console.log(resolve.keys());
+	const routes = resolve.keys().map(key => resolve(key).default).sort((a, b) => {
+		if (a.path === '/' || b.path !== '/') {
+			return 1;
 		}
-		const reducerName = newKey[0];
-		const path = newKey.join('/:');
-		if (reducerName === '/index') {
-			Index = {
-				path: '/',
-				component: resolve(key).default,
-			};
-		} else {
-			routes.push({
-				path,
-				component: resolve(key).default,
-			});
+		if (a.path !== '/' || b.path === '/') {
+			return -1;
 		}
+		if (a.exact && !b.exact) {
+			return -1;
+		}
+		if (!a.exact && b.exact) {
+			return 1;
+		}
+		return 0;
 	});
-	if (Index) {
-		routes.push(Index);
-	}
+	console.log(routes);
 	return routes;
 };
 

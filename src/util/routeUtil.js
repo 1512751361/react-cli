@@ -23,26 +23,55 @@ export function renderRoutes(routes) {
 // wrap <Route> and use this everywhere instead, then when
 // sub routes are added to any route it'll work
 export function RouteWithSubRoutes(route) {
+	if (!route) {
+		return null;
+	}
+	const {
+		childRoutes,
+		component,
+		isChild,
+		...other
+	} = route;
+	if (childRoutes && childRoutes.length && isChild) {
+		if (isChild) {
+			return (
+				<Route
+					{...other}
+					render={props => (
+						<route.component {...props} parentRoutes={route} childRoutes={childRoutes}>
+							{renderRoutes(childRoutes)}
+						</route.component>
+					)}
+				/>
+			);
+		}
+		return (
+			<Route
+				{...other}
+				render={(props) => {
+					// console.log(props)
+					// console.log(route)
+					if (childRoutes) {
+						return (
+							<route.component
+								{...props}
+								parentRoutes={route}
+								childRoutes={childRoutes}
+								renderChildRoutes={() => renderRoutes(childRoutes)}
+							/>
+						);
+					}
+					// pass the sub-routes down to keep nesting
+					return (
+						<route.component {...props} parentRoutes={route} childRoutes={childRoutes} />
+					);
+				}}
+			/>
+		);
+	}
 	return (
 		<Route
-			path={route.path}
-			render={(props) => {
-				// console.log(props)
-				// console.log(route)
-				if (route && route.children) {
-					return (
-						<route.component
-							{...props}
-							routes={route.children}
-							childRoutes={() => renderRoutes(route.routes)}
-						/>
-					);
-				}
-				return (
-				// pass the sub-routes down to keep nesting
-					<route.component {...props} childRoutes={() => null} />
-				);
-			}}
+			{...route}
 		/>
 	);
 }

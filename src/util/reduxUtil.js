@@ -1,4 +1,7 @@
 import { createSelector } from 'reselect';
+import {
+	put, call, takeLatest, all, select, fork, takeEvery,
+} from 'redux-saga/effects';
 // Action Creators 生成器
 export const makeActionCreator = (type, ...argNames) => (...args) => {
 	const action = { type, payload: {} };
@@ -20,12 +23,13 @@ export const createReducer = (initialState, handlers) => (
 	return state;
 };
 
+// 创建 异步 Action types
 export const createRequestTypes = actionType => ({
 	REQUEST: `${actionType}_REQUEST`,
 	SUCCESS: `${actionType}_SUCCESS`,
 	FAILURE: `${actionType}_FAILURE`,
 });
-// 异步 Action Creators
+// 异步 Action Creators 生成器
 export const makeAsyncActionCreator = ({ REQUEST, SUCCESS, FAILURE }) => ({
 	request: payload => ({
 		type: REQUEST,
@@ -52,4 +56,22 @@ export const makeCreateSelector = (argNames = [], callback) => {
 		throw new Error('makeCreateSelector参数不是有效的值');
 	});
 	return createSelector(inputSelectors, callback);
+};
+
+// saga Creators 生成器
+export const makeSagaCreator = (latest, every) => {
+	const newTakeList = [];
+	if (Object.prototype.toString.call(latest) === '[object Object]') {
+		Object.keys(latest).forEach((key) => {
+			newTakeList.push(takeLatest(key, latest[key], { select, put, call }));
+		});
+	}
+	if (Object.prototype.toString.call(every) === '[object Object]') {
+		Object.keys(every).forEach((key) => {
+			newTakeList.push(takeEvery(key, every[key], { select, put, call }));
+		});
+	}
+	return fork(function* saga() {
+		yield all(newTakeList);
+	});
 };

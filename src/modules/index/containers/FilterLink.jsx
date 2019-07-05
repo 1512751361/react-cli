@@ -3,7 +3,7 @@ import { setVisibilityFilter } from '../actions';
 import Link from '../components/Link';
 
 const mapStateToProps = (state, ownProps) => ({
-	active: ownProps.filter === state.pages.index.visibilityFilter,
+	active: ownProps.filter === state.modules.index.visibilityFilter,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

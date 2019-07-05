@@ -21,8 +21,8 @@ const getVisibleTodos = makeCreateSelector(['visibilityFilter', 'todos'],
 	});
 
 const mapStateToProps = state => ({
-	todos: getVisibleTodos(state.pages.index),
-	count: state.pages.index.count,
+	todos: getVisibleTodos(state.modules.index),
+	count: state.modules.index.count,
 });
 
 const mapDispatchToProps = dispatch => ({

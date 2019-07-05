@@ -35,6 +35,8 @@ const AddTodo = ({ dispatch }) => {
 			<a href="/404">404</a>
 			<br />
 			<Link to="/404">404-2</Link>
+			<br />
+			<Link to="/login">Login</Link>
 		</div>
 	);
 };
