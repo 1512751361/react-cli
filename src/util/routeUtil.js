@@ -1,6 +1,7 @@
 import React from 'react';
 import camelCase from 'lodash/camelCase';
 import { Route } from 'react-router-dom';
+import RouterGuard from '@/common/routerGuard';
 
 // 创建路由
 export function renderRoutes(routes) {
@@ -38,9 +39,9 @@ export function RouteWithSubRoutes(route) {
 				<Route
 					{...other}
 					render={props => (
-						<route.component {...props} parentRoutes={route} childRoutes={childRoutes}>
+						<RouterGuard {...route} {...props} parentRoutes={route} childRoutes={childRoutes}>
 							{renderRoutes(childRoutes)}
-						</route.component>
+						</RouterGuard>
 					)}
 				/>
 			);
@@ -53,7 +54,8 @@ export function RouteWithSubRoutes(route) {
 					// console.log(route)
 					if (childRoutes) {
 						return (
-							<route.component
+							<RouterGuard
+								{...route}
 								{...props}
 								parentRoutes={route}
 								childRoutes={childRoutes}
@@ -63,7 +65,7 @@ export function RouteWithSubRoutes(route) {
 					}
 					// pass the sub-routes down to keep nesting
 					return (
-						<route.component {...props} parentRoutes={route} childRoutes={childRoutes} />
+						<RouterGuard {...route} {...props} parentRoutes={route} childRoutes={childRoutes} />
 					);
 				}}
 			/>
@@ -71,7 +73,8 @@ export function RouteWithSubRoutes(route) {
 	}
 	return (
 		<Route
-			{...route}
+			{...other}
+			render={props => <RouterGuard {...route} {...props} />}
 		/>
 	);
 }

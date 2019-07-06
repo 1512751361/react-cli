@@ -1,27 +1,22 @@
-import loadable from '@loadable/component';
 import Index from './index';
 import Nav from './components/Nav';
-
-
-const Order = loadable(() => import('../order'));
-const ServerPage = loadable(() => import('../service'));
 
 export default {
 	path: '/',
 	component: Nav,
 	isChild: true,
-	meta: {
-		roles: ['clientLogin:list'],
-	},
 	childRoutes: [{
 		exact: true,
 		path: '/',
 		component: Index,
 	}, {
 		path: '/order',
-		component: Order,
+		meta: {
+			roles: ['clientLogin:list'],
+		},
+		component: 'order',
 	}, {
 		path: '/service',
-		component: ServerPage,
+		component: 'service',
 	}],
 };
