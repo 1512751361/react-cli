@@ -1,7 +1,7 @@
 export default {
 	path: '/shop',
 	meta: {
-		roles: ['clientLogin:list'],
+		roles: ['shop'],
 	},
 	component: 'shop/Container',
 };

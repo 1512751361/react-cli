@@ -12,11 +12,14 @@ export default {
 	}, {
 		path: '/order',
 		meta: {
-			roles: ['clientLogin:list'],
+			roles: ['order'],
 		},
 		component: 'order',
 	}, {
 		path: '/service',
 		component: 'service',
+		meta: {
+			auth: true,
+		},
 	}],
 };

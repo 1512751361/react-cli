@@ -1,22 +1,53 @@
 import React from 'react';
 import camelCase from 'lodash/camelCase';
-import { Route } from 'react-router-dom';
-import RouterGuard from '@/common/routerGuard';
+import { Route, Redirect } from 'react-router-dom';
+import loadable from '@loadable/component';
+import checkPermission from '@util/permissionUtil';
+
+
+// LoadableComponent
+export function loadableComponent(component) {
+	if (Object.prototype.toString.call(component) === '[object String]') {
+		return loadable(() => import(`../modules/${component}`));
+	}
+	return component;
+}
 
 // 创建路由
-export function renderRoutes(routes) {
+export function renderRoutes(routes, Authorization, roles = [], authPath = '/login', rolePath = '/401', exactProps = {}) {
 	if (routes && Object.prototype.toString.call(routes) === '[object Array]') {
 		return routes.map((route) => {
 			if (route) {
-				const { path } = route;
-				const key = camelCase(path) || `routes_${parseInt(Math.random() * 100000, 10)}`;
-				return <RouteWithSubRoutes key={key} {...route} />;
+				const { path, key } = route;
+				const key2 = camelCase(path) || `routes_${parseInt(Math.random() * 100000, 10)}`;
+				return (
+					<RouteWithSubRoutes
+						{...route}
+						key={key || key2}
+						Authorization={Authorization}
+						authPath={authPath}
+						roles={roles}
+						rolePath={rolePath}
+						exactProps={exactProps}
+					/>
+				);
 			}
 		});
-	} if (routes && Object.prototype.toString.call(routes) === '[object Object]') {
-		const { path } = routes;
-		const key = camelCase(path) || `routes_${parseInt(Math.random() * 100000, 10)}`;
-		return <RouteWithSubRoutes key={key} {...routes} />;
+	}
+	if (routes && Object.prototype.toString.call(routes) === '[object Object]') {
+		const { path, key } = routes;
+		const key2 = camelCase(path) || `routes_${parseInt(Math.random() * 100000, 10)}`;
+		return (
+			<RouteWithSubRoutes
+				{...routes}
+				key={key || key2}
+				Authorization={Authorization}
+				authPath={authPath}
+				roles={roles}
+				rolePath={rolePath}
+				exactProps={exactProps}
+			/>
+		);
 	}
 	return null;
 }
@@ -31,6 +62,12 @@ export function RouteWithSubRoutes(route) {
 		childRoutes,
 		component,
 		isChild,
+		Authorization,
+		authPath,
+		roles,
+		rolePath,
+		exactProps,
+		meta,
 		...other
 	} = route;
 	if (childRoutes && childRoutes.length && isChild) {
@@ -38,43 +75,97 @@ export function RouteWithSubRoutes(route) {
 			return (
 				<Route
 					{...other}
-					render={props => (
-						<RouterGuard {...route} {...props} parentRoutes={route} childRoutes={childRoutes}>
-							{renderRoutes(childRoutes)}
-						</RouterGuard>
-					)}
+					render={(props) => {
+						if (meta && (meta.auth || meta.roles) && (!Authorization) && route.path !== authPath) {
+							// 需要权限页面 且没有权限重定向到登录页面
+							return <Redirect to={{ pathname: authPath, state: { from: props.location } }} />;
+						}
+						if (meta && meta.roles) {
+							if ((!checkPermission(meta.roles, roles)) && route.path !== rolePath) {
+								// 没有权限
+								return (
+									<Redirect
+										to={{
+											pathname: rolePath,
+											state: { from: props.location },
+										}}
+									/>
+								);
+							}
+						}
+						if (route.render) {
+							route.render({
+								...props,
+								...exactProps,
+								routes: route,
+								childRoutes: () => renderRoutes(
+									childRoutes, Authorization, roles, authPath, rolePath,
+								),
+							});
+						}
+						const LoadableCom = loadableComponent(route.component);
+						return (
+							<LoadableCom
+								{...props}
+								{...exactProps}
+								routes={route}
+								childRoutes={() => renderRoutes(
+									childRoutes, Authorization, roles, authPath, rolePath,
+								)}
+							>
+								{renderRoutes(childRoutes, Authorization, roles, authPath, rolePath)}
+							</LoadableCom>
+						);
+					}}
 				/>
 			);
 		}
-		return (
-			<Route
-				{...other}
-				render={(props) => {
-					// console.log(props)
-					// console.log(route)
-					if (childRoutes) {
-						return (
-							<RouterGuard
-								{...route}
-								{...props}
-								parentRoutes={route}
-								childRoutes={childRoutes}
-								renderChildRoutes={() => renderRoutes(childRoutes)}
-							/>
-						);
-					}
-					// pass the sub-routes down to keep nesting
-					return (
-						<RouterGuard {...route} {...props} parentRoutes={route} childRoutes={childRoutes} />
-					);
-				}}
-			/>
-		);
 	}
 	return (
 		<Route
 			{...other}
-			render={props => <RouterGuard {...route} {...props} />}
+			render={(props) => {
+				// console.log('route:');
+				// console.log(route);
+				if (meta && (meta.auth || meta.roles) && (!Authorization) && route.path !== authPath) {
+					// 需要权限页面 且没有权限重定向到登录页面
+					return <Redirect to={{ pathname: authPath, state: { from: props.location } }} />;
+				}
+				if (meta && meta.roles) {
+					if ((!checkPermission(meta.roles, roles)) && route.path !== rolePath) {
+						// 没有权限
+						return (
+							<Redirect
+								to={{
+									pathname: rolePath,
+									state: { from: props.location },
+								}}
+							/>
+						);
+					}
+				}
+				if (route.render) {
+					route.render({
+						...props,
+						...exactProps,
+						routes: route,
+						childRoutes: () => renderRoutes(
+							childRoutes, Authorization, roles, authPath, rolePath,
+						),
+					});
+				}
+				const LoadableCom = loadableComponent(route.component);
+				return (
+					<LoadableCom
+						{...props}
+						{...exactProps}
+						routes={route}
+						childRoutes={() => renderRoutes(
+							childRoutes, Authorization, roles, authPath, rolePath,
+						)}
+					/>
+				);
+			}}
 		/>
 	);
 }
