@@ -148,7 +148,7 @@
 		
 	8. @babel/plugin-proposal-object-rest-spread
 	
-		
+		编译解析 ... 对象语法
 		```
 		let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
 		console.log(x); // 1
