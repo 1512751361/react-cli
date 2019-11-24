@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React from 'react';
 import camelCase from 'lodash/camelCase';
 import { Route, Redirect } from 'react-router-dom';
@@ -24,7 +23,7 @@ export function loadableComponent(component, dir = 'modules/') {
  * @param {object} route function组件props参数
  * @returns 返回当前路由和自路由集合/方法
  */
-export function RouteWithSubRoutes(route) {
+export const RouteWithSubRoutes = (route) => {
   if (!route) {
     return null;
   }
@@ -135,7 +134,7 @@ export function RouteWithSubRoutes(route) {
       }}
     />
   );
-}
+};
 
 /**
  * @description 创建路由
@@ -150,7 +149,9 @@ export function RouteWithSubRoutes(route) {
 export function renderRoutes(routes, Authorization, roles = [], authPath = '/login', rolePath = '/401', exactProps = {}) {
   if (routes && Object.prototype.toString.call(routes) === '[object Array]') {
     return routes.map((route) => {
-      if (route) {
+      if (Object.prototype.toString.call(route) === '[object Array]') {
+        return renderRoutes(route, Authorization, roles = [], authPath = '/login', rolePath = '/401', exactProps = {});
+      } if (route) {
         const { path, key } = route;
         const key2 = camelCase(path) || `routes_${parseInt(Math.random() * 100000, 10)}`;
         return (
