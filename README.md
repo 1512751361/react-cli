@@ -29,6 +29,7 @@
 	1. 安装webpack
 		
 		npm i webpack webpack-cli -D
+    npm i webpack-merge -D
 
 	2. 配置webpack文件
 		
@@ -65,55 +66,81 @@
 
 ### 2. 配置Loader
 
-	1. 处理css loader
+  1. 处理css loader
 
-		1. 加载资源
+	  1. 加载资源
 
-			npm i style-loader css-loader sass-loader node-sass -D
+			```npm i style-loader css-loader sass-loader node-sass -D```
+    
+    2. 添加css打包分离压缩去重
 
-		2. 添加webpack加载器配置
-		
-		3. 添加css打包分离压缩去重
-
-			// 添加提取css插件
+      ```
+      npm i mini-css-extract-plugin optimize-css-assets-webpack-plugin postcss-loader autoprefixer postcss-import cssnano -D
+      
+      // 添加提取css插件
+      // 配置 ```css loader``` ，配置 ```plugins``` 打包文件名和出口路径
 			npm i mini-css-extract-plugin -D
+
 			// 添加css压缩、去重插件
-			npm i optimize-css-assets-webpack -D
+      // ```optimization.minimizer``` 添加插件
+			npm i optimize-css-assets-webpack-plugin -D
+
 			// 添加用于Webpack处理带有Postss的CSS的加载程序
 			npm i postcss-loader -D
+
 			// 添加css前缀，兼容不同浏览器 插件
 			npm i autoprefixer -D
+
 			// 添加处理css的@import 只支持本地的 import 处理,不支持http 等远程的URL链接的处理插件
 			npm i postcss-import -D
+
 			// 添加css优化处理器
+      // 用于添加 ```optimize-css-assets-webpack-plugin``` 插件添加 ```optimization.minimizer``` 配置
 			npm i cssnano -D
+      ```
+
+		2. 添加webpack加载器配置
+
+      配置 ```webpack module.rules```
 
 
-	2. 处理图片、字体、文件 loader
+  2. 处理图片、字体、文件 loader
 		
 		1. 加载资源
 
-			npm i file-loader -D		
+			```npm i file-loader -D	```	
 
 		2. 添加webpack加载器配置
+
+      配置 ```webpack module.rules```
+  
+  3. 加载资源数据（可选）
+
+    可以加载的有用资源还有数据，如 JSON 文件，CSV、TSV 和 XML。类似于 NodeJS，JSON 支持实际上是内置的，可以直接使用。
+    导入 CSV、TSV 和 XML需加载
+    ```npm install --save-dev csv-loader xml-loader```
 
 ### 3. 引入babel
 
-	1. 说明作用
+  1. 说明作用
 	
-		babel是用来解析es6语法或者es7语法分解析器，让开发者能够使用新的es语法，同时支持jsx,vue等多种框架。	
+		babel是用来解析es6语法或者es7语法分解析器，让开发者能够使用新的es语法，同时支持jsx,tsx,vue等多种框架。	
 
 	2. 安装babel
 		
-		npm i @babel/core babel-loader -D
+    // 加载 ES2015+ 代码，然后使用 Babel 转译为 ES5
+    ```npm i @babel/core babel-loader -D```
 
-	2. 配置babel文件: .babelrc
+    // 像 JavaScript 一样加载 TypeScript 2.0+
+    ``` npm i ts-loader -D ``` 或者 ``` npm i awesome-typescript-loader -D```
+
+	2. 配置babel文件: .babelrc 或者 配置到 babel-loader options 中
 
 		`{
 		    "presets": [
-		        "@babel/preset-env",
-				"@babel/preset-react",
-				"state-0"
+		      "@babel/preset-env",
+          "@babel/preset-react",
+          "state-0"
 		    ],
 		    "plugins": []
 		}`
@@ -126,13 +153,13 @@
 
 	3. @babel/preset-env
 
-		表示将JavaScript es6语法代码编译为 es5语法		
+		表示将 JavaScript es6 语法代码编译为 es5语法		
 
 	4. @babel/preset-react
 
-		表示将JSX和其他东西编译到JavaScript中
+		表示将 JSX和其他东西编译到 JavaScript 中
 
-	6. @babel/plugin-transform-runtime @babel/runtim
+	6. @babel/plugin-transform-runtime @babel/runtime
 
 		Babel 对一些公共方法使用了非常小的辅助代码，比如 _extend。默认情况下会被添加到每一个需要它的文件中
 		
@@ -140,11 +167,13 @@
 
 		下面的配置禁用了 Babel 自动对每个文件的 runtime 注入，而是引入 @babel/plugin-transform-runtime 并且使所有辅助代码从这里引用。
 
-		npm i @babel/runtim @babel/plugin-transform-runtime -D
+		```npm i @babel/runtime @babel/plugin-transform-runtime -D``
 
 	7. babel-polyfill
 
-		我们之前使用的babel，babel-loader 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译。如果想使用这些新的对象和方法，必须使用 babel-polyfill，为当前环境提供一个垫片。
+		我们之前使用的 ```babel，babel-loader``` 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译。如果想使用这些新的对象和方法，必须使用 babel-polyfill，为当前环境提供一个垫片。
+
+    ```npm i babel-polyfill -D```
 		
 	8. @babel/plugin-proposal-object-rest-spread
 	
@@ -156,30 +185,110 @@
 		console.log(z); // { a: 3, b: 4 }
 		```
 
+  9. @babel/plugin-proposal-class-properties
+
+    // 编译解析 class 类中的箭头函数
+    ```npm i @babel/plugin-proposal-class-properties -D```
+
+  10. @babel/plugin-syntax-dynamic-import
+
+    // 编译解析 动态导入资源
 
 ### 4. 管理输出
 
-	1. 添加 HtmlWebpackPlugin 插件
+  1. 添加 HtmlWebpackPlugin 插件,
 
-		npm i html-webpack-plugin -D	
+    // 添加到 ```webpack plugins``` ，动态打包输出 html 文件
+    ```npm i html-webpack-plugin -D	```
 
 	2. 添加 清理 /dist 文件夹插件 CleanWebpackPlugin
 
-		npm i clean-webpack-plugin -D
+    // 添加到 ```webpack plugins``` ，动态清理打包文件内容
+    ```npm i clean-webpack-plugin -D```
 
 
-### 5. 使用webpack-dev-server
+### 5. 使用 webpack-dev-server 配置开发环境
 
-	1. 安装
+  1. 安装
 
-		npm i webpack-dev-server -D
+    ```npm i webpack-dev-server -D```
 
-	2. 配置webpack配置文件
+	2. 配置webpack配置文件 ```devServer```
 
-	3. 添加模块热更新插件
+	3. 添加模块热更新插件 ```plugins```
 
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
+
+### 6. 配置 webpack resolve 解析
+
+  1. resolve.modules
+
+    告诉 webpack 解析模块时应该搜索的目录.
+    绝对路径和相对路径都能使用，但是要知道它们之间有一点差异。
+
+  2. resolve.alias
+
+    设置引用文件路径的别名
+
+  3. resolve.extensions
+
+    自动解析确定的扩展。
+
+### 7. 其他 webpack 配置
+
+  1. 告知 webpack 为目标(target)指定一个环境
+
+    ```target: 'web',```
+  
+  2. 防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖(external dependencies)
+
+    ```
+    externals: {
+      jquery: 'jQuery',
+    },
+    ```
+  
+  3. 配置如何展示性能提示
+
+    ```
+    performance: {
+      // 定一个创建后超过 500kb 的资源，将展示一条警告
+      maxAssetSize: 1024 * 500,
+    },
+    ```
+
+### 8. 打包分离压缩
+
+  1. 压缩
+
+    ```npm i terser-webpack-plugin -D```
+    ```
+    new TerserPlugin({
+      terserOptions: {
+        compress: {
+          warnings: false,
+          drop_console: true, // console
+          drop_debugger: false,
+          pure_funcs: ['console.log'], // 移除console
+        },
+      },
+      sourceMap: false,
+      parallel: true,
+    }),
+    ```
+
+  2. 防止重复
+
+    ```
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common' // 指定公共 bundle 的名称。
+    })
+    ```
+  
+  3. 代码分离
+
+    配置 ```webpack optimization.splitChunks``
 
 
 ### 6. 添加离线服务器

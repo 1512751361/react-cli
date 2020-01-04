@@ -14,7 +14,8 @@
     "dev": "webpack-dev-server --config build/webpack.dev.js --progress --colors",
     "build:prod": "webpack --config build/webpack.prod.js --progress --colors",
     "build:stage": "webpack --config build/webpack.prod.js --progress --colors",
-    "start": "npm run build:prod && http-server dist"
+    "start": "npm run build:prod && http-server dist",
+    "httpServer": "http-server dist"
   },
   "author": "",
   "license": "ISC",
