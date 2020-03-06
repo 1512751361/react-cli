@@ -20,18 +20,40 @@ module.exports = {
     noParse(content) {
       return /jquery/.test(content);
     },
+    /**
+     * @description 创建模块时，匹配请求的规则数组。这些规则能够修改模块的创建方式。这些规则能够对模块（module）应用loader，或者修改解析器（parser）。
+     * @description rule 每个规则可以分为三部分：condition，result，nested rule
+     * @description condition：1、resource 请求文件的绝对路径。
+     *              2、issuer 被请求资源的模块文件的绝对路径。test,include,exclude,resource.
+     * @description result: 1. 应用的loader--loader,options,use,query,loaders,enforce。
+     *              2. Parser选项--parser。
+     * @description nested rule：rules/oneOf
+     */
     rules: [
       // 加载babel
       {
+        // 用来匹配符合条件的文件（匹配特定条件）
         test: /\.(js|jsx|ts|tsx)$/,
+        // 设置依赖文件不会存在的目录（排除特定条件）
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: [
+              '@babel/transform-runtime',
+              '@babel/plugin-proposal-object-rest-spread',
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-syntax-dynamic-import',
+            ],
+          },
         },
       },
       // 加载图片
       {
-        test: /\.(png|svg|jpg|jpeg|gif)/,
+        // test: /\.(png|svg|jpg|jpeg|gif)/,
+        // 匹配数组中任何一个符合条件。not 必须排除数组中的所有条件。and 必须匹配数组中的所有条件。
+        or: [/.png$/, '.svg$', '.jpg$', '.jpeg$', '.gif$'],
         use: [{
           loader: 'file-loader',
           options: {
@@ -41,7 +63,11 @@ module.exports = {
       },
       // 加载字体
       {
-        test: /\.(woff|woff2|eot|ttf|otf)/,
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        // 设置依赖文件索引目录（匹配特定条件）
+        include: [
+          path.resolve(__dirname, '..', 'src'),
+        ],
         use: [{
           loader: 'file-loader',
           options: {

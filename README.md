@@ -24,9 +24,11 @@
 	README.md				--说明文件
 
 
+## webpack 配置
+
 ### 1. webpack配置
 
-	1. 安装webpack
+		1. 安装webpack
 		
 		npm i webpack webpack-cli -D
     npm i webpack-merge -D
@@ -63,10 +65,172 @@
 		// 打包测试环境
 		npm run build:stage
 
+### 2. 模块(module)
 
-### 2. 配置Loader
+	在 ```module``` 选项主要就是设置 ```webpack``` 中常用的 ```loaders```。通过 ```rules``` 规则来匹配具体应用的文件和loaders或者修改解析器（parser）。
 
-  1. 处理css loader
+	1. module.noParse 防止预编译匹配规则
+
+		``` noParse: RegExp | [RegExp] | function ```
+	
+	2. ```module.rules``` 设置匹配规则
+
+		```module.rules``` 的选项具体是用来设置 ```loaders``` 匹配文件的规则。
+
+		```module.rules: [{...}]```
+
+		```rules```里面的每个对象决定了 ```loaders``` 的具体类型以及 ```loders``` 作用的具体文件。
+
+	3. 文件匹配
+
+		```rule.test, rule.exclude, rule.include, rule.and, rule.or, rule.not ```
+
+		上面三个对象其实挂载到的是 ```rule.resource``` 对象上的，你可以直接写到 ```rule``` 上，也可以写到 ```rule.resource``` 上。他们的值同一位 ```condition```。
+
+		```rule.resourceQuery```
+
+	4. condition 条件
+
+		主要用来设置匹配文件的条件规则。可以接受的值有：
+
+		```condition: string | RegExp | function | array | object```
+
+		***string***: 匹配文件的绝对路径
+		***RegExp***: 匹配文件的正则
+		***function***: 参数为 ```input``` 的路径，根据返回的 ```boolean``` 来决定是否匹配
+		***array***: 里面可以传多个 ```condition``` 匹配规则
+		***object***: 不常用，用来匹配 ```key```
+
+	4. rule.oneOf
+
+		接收一个数组，文件资源会默认找到 ```oneOf``` 中的第一个匹配规则，来调用对应的loader处理。
+
+	5. rule.parser
+
+		解析选项对象。所有应用的解析选项都将合并。
+
+	6. rule.use
+
+		应用于模块的 ```UseEntries``` 列表。每个入口指定一个 ```loader```。
+
+	7. UseEntries
+
+		必须有一个 ```loader``` 属性是字符串。它使用 ```loader``` 解析选项（```resolveLoader```）,相对于配置中的 ```context``` 来解析。
+
+		可以有一个 ```options``` 属性为字符串或对象。值可以传递到 ```loader``` 中，将其理解 ```options``` 选项。
+
+
+### 3. loader 编译设置
+
+	在 ```webpack2``` 的时候，主要写法是根据 ```loaders``` 和 ```loader``` 来进行设定的。不过，在 ```webpack 3``` 改为根据文件来决定 ```loader``` 的加载。这其中，最大的特点就是，将 ```loaders``` 替换为了 ```rules```。
+
+	按照规范，```use``` 是用来时间引入 ```loader``` 的标签。在 ```webpack 3 ``` 时代，还保留了 ```loader``` 字段，废除了 ```query``` 字段，其实可以在 ```use``` 中找到替代。
+
+	1. loader
+	
+		用来定义具体使用的 ```loader```，这里等同于：```use:[loader]```。
+
+	2. query
+
+		用来限定具体的 ```loader``` 使用的配置参数，例如
+		
+		```
+			test: /\.js$/,
+			loader: 'babel-loader',
+			query: {
+				presets: ['es2015']
+			}
+		```
+
+		不过，在 ```webpack 3``` 中已经废弃了 ```query```，使用 ```use``` 中 ```options``` 选项：
+
+		```
+			test: /\.js$/,
+			use: [
+				{
+					loader: 'babel-loader',
+					options: {
+						presets: ['es2015']
+					}
+				}
+			]
+		```
+
+### 4. babel 配置
+
+	```babel``` 是一个 ```JavaScript```` 编译器，用来解析 ```es6``` 语法或者 ```es7``` 语法分解析器，让开发者能够使用新的 ```es``` 语法，同时支持 ```jsx, tsx, vue``` 等多种框架。
+
+	1. 安装babel
+		
+    // 加载 ES2015+ 代码，然后使用 Babel 转译为 ES5
+		```npm i @babel/core babel-loader -D```
+
+    // 像 JavaScript 一样加载 TypeScript 2.0+
+    ``` npm i ts-loader -D ``` 或者 ``` npm i awesome-typescript-loader -D```
+
+	2. 配置babel文件: .babelrc 或者 配置到 babel-loader options 中
+
+		`{
+		    "presets": [
+		      "@babel/preset-env",
+          "@babel/preset-react",
+          "state-0"
+		    ],
+		    "plugins": []
+		}`
+
+		```babel``` 支持自定义的预设(presets)或插件(plugins),只有配置了这两个才能让babel生效，单独的安装babel是无意义的。
+
+		```presets```：代表 ```babel``` 支持那种语法(就是你用那种语法写)，优先级是从下往上,state-0|1|2|..代表有很多没有列入标准的语法
+
+		```plugins```: 代表 ```babel``` 解析的时候使用哪些插件，作用和 ```presets```` 类似，优先级是从上往下。
+	
+		3. @babel/preset-env
+
+			表示将 ```JavaScript es6``` 语法代码编译为 ```es5``` 语法		
+
+		4. @babel/preset-react
+
+			表示将 ```JSX``` 和其他东西编译到 ```JavaScript``` 中
+
+		6. @babel/plugin-transform-runtime @babel/runtime
+
+			Babel 对一些公共方法使用了非常小的辅助代码，比如 _extend。默认情况下会被添加到每一个需要它的文件中
+			
+			你可以引入 Babel runtime 作为一个独立模块，来避免重复引入。
+
+			下面的配置禁用了 Babel 自动对每个文件的 runtime 注入，而是引入 @babel/plugin-transform-runtime 并且使所有辅助代码从这里引用。
+
+			```npm i @babel/runtime @babel/plugin-transform-runtime -D``
+
+		7. babel-polyfill
+
+			我们之前使用的 ```babel，babel-loader``` 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译。如果想使用这些新的对象和方法，必须使用 babel-polyfill，为当前环境提供一个垫片。
+
+			```npm i babel-polyfill -D```
+			
+		8. @babel/plugin-proposal-object-rest-spread
+		
+			编译解析 ... 对象语法
+			```
+			let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+			console.log(x); // 1
+			console.log(y); // 2
+			console.log(z); // { a: 3, b: 4 }
+			```
+
+		9. @babel/plugin-proposal-class-properties
+
+			// 编译解析 class 类中的箭头函数
+			```npm i @babel/plugin-proposal-class-properties -D```
+
+		10. @babel/plugin-syntax-dynamic-import
+
+			// 编译解析 动态导入资源
+
+### 5. loader 加载资源
+
+	1. 处理css loader
 
 	  1. 加载资源
 
@@ -120,81 +284,7 @@
     导入 CSV、TSV 和 XML需加载
     ```npm install --save-dev csv-loader xml-loader```
 
-### 3. 引入babel
-
-  1. 说明作用
-	
-		babel是用来解析es6语法或者es7语法分解析器，让开发者能够使用新的es语法，同时支持jsx,tsx,vue等多种框架。	
-
-	2. 安装babel
-		
-    // 加载 ES2015+ 代码，然后使用 Babel 转译为 ES5
-    ```npm i @babel/core babel-loader -D```
-
-    // 像 JavaScript 一样加载 TypeScript 2.0+
-    ``` npm i ts-loader -D ``` 或者 ``` npm i awesome-typescript-loader -D```
-
-	2. 配置babel文件: .babelrc 或者 配置到 babel-loader options 中
-
-		`{
-		    "presets": [
-		      "@babel/preset-env",
-          "@babel/preset-react",
-          "state-0"
-		    ],
-		    "plugins": []
-		}`
-
-		babel支持自定义的预设(presets)或插件(plugins),只有配置了这两个才能让babel生效，单独的安装babel是无意义的。
-
-		presets：代表babel支持那种语法(就是你用那种语法写)，优先级是从下往上,state-0|1|2|..代表有很多没有列入标准的语法
-
-		plugins: 代表babel解析的时候使用哪些插件，作用和presets类似，优先级是从上往下。
-
-	3. @babel/preset-env
-
-		表示将 JavaScript es6 语法代码编译为 es5语法		
-
-	4. @babel/preset-react
-
-		表示将 JSX和其他东西编译到 JavaScript 中
-
-	6. @babel/plugin-transform-runtime @babel/runtime
-
-		Babel 对一些公共方法使用了非常小的辅助代码，比如 _extend。默认情况下会被添加到每一个需要它的文件中
-		
-		你可以引入 Babel runtime 作为一个独立模块，来避免重复引入。
-
-		下面的配置禁用了 Babel 自动对每个文件的 runtime 注入，而是引入 @babel/plugin-transform-runtime 并且使所有辅助代码从这里引用。
-
-		```npm i @babel/runtime @babel/plugin-transform-runtime -D``
-
-	7. babel-polyfill
-
-		我们之前使用的 ```babel，babel-loader``` 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译。如果想使用这些新的对象和方法，必须使用 babel-polyfill，为当前环境提供一个垫片。
-
-    ```npm i babel-polyfill -D```
-		
-	8. @babel/plugin-proposal-object-rest-spread
-	
-		编译解析 ... 对象语法
-		```
-		let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
-		console.log(x); // 1
-		console.log(y); // 2
-		console.log(z); // { a: 3, b: 4 }
-		```
-
-  9. @babel/plugin-proposal-class-properties
-
-    // 编译解析 class 类中的箭头函数
-    ```npm i @babel/plugin-proposal-class-properties -D```
-
-  10. @babel/plugin-syntax-dynamic-import
-
-    // 编译解析 动态导入资源
-
-### 4. 管理输出
+### 6. 管理输出
 
   1. 添加 HtmlWebpackPlugin 插件,
 
@@ -207,7 +297,7 @@
     ```npm i clean-webpack-plugin -D```
 
 
-### 5. 使用 webpack-dev-server 配置开发环境
+### 7. 使用 webpack-dev-server 配置开发环境
 
   1. 安装
 
@@ -220,7 +310,7 @@
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
 
-### 6. 配置 webpack resolve 解析
+### 8. 配置 webpack resolve 解析
 
   1. resolve.modules
 
@@ -235,7 +325,7 @@
 
     自动解析确定的扩展。
 
-### 7. 其他 webpack 配置
+### 9. 其他 webpack 配置
 
   1. 告知 webpack 为目标(target)指定一个环境
 
@@ -258,7 +348,7 @@
     },
     ```
 
-### 8. 打包分离压缩
+### 10. 打包分离压缩
 
   1. 压缩
 
@@ -291,19 +381,19 @@
     配置 ```webpack optimization.splitChunks``
 
 
-### 6. 添加离线服务器
+### 11. 添加离线服务器
 
 	npm i http-server -D
 
 
-### 7. 安装React
 
-	1. 安装
+## React 配置
+
+### 1. 安装 React
 
 		npm i react react-dom -S
 
-
-### 8. 安装react路由
+### 2. 安装react路由
 
 	1. 安装
 
@@ -321,7 +411,7 @@
 		2. 如果改页面要成为主路由，需要添加 route.js 创建子模块路由对象
 	
 
-### 9. 安装react-redux
+### 3. 安装react-redux
 
 	1. 安装
 
@@ -338,12 +428,12 @@
 		1. reducer文件必须使用在 modules/ 模块下，且文件名为 reducer
 		2. saga文件必须使用在 modules/ 模块下，且文件名为 saga	
 	
-### 10. 安装axios api请求
+### 4. 安装axios api请求
 
 	1. 配置request.js 请求模块
 
 
-### 11. 安装eslint
+## eslint 配置
 
 	1. 安装
 		
@@ -374,3 +464,6 @@
 		"extends":"airbnb",
 
 	6. 添加一下规则
+
+
+
