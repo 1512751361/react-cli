@@ -55,9 +55,6 @@ const config = {
 				use: [
 					{
 						loader: 'style-loader',
-						options: {
-							hmr: true,
-						},
 					},
 					'css-loader',
 				],
@@ -67,14 +64,12 @@ const config = {
 				use: [
 					{
 						loader: 'style-loader',
-						options: {
-							hmr: true,
-						},
 					},
 					{
 						loader: 'css-loader',
 						options: {
 							// 指定启用css modules
+							import: false,
 							modules: true,
 							importLoaders: 2,
 						},

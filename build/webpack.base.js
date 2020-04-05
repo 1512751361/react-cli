@@ -51,9 +51,8 @@ module.exports = {
       },
       // 加载图片
       {
-        // test: /\.(png|svg|jpg|jpeg|gif)/,
+        test: /\.(png|svg|jpg|jpeg|gif)/,
         // 匹配数组中任何一个符合条件。not 必须排除数组中的所有条件。and 必须匹配数组中的所有条件。
-        or: [/.png$/, '.svg$', '.jpg$', '.jpeg$', '.gif$'],
         use: [{
           loader: 'file-loader',
           options: {
