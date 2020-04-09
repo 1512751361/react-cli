@@ -28,10 +28,10 @@
 
 ### 1. webpack配置
 
-		1. 安装webpack
+	1. 安装webpack
 		
 		npm i webpack webpack-cli -D
-    npm i webpack-merge -D
+    		npm i webpack-merge -D
 
 	2. 配置webpack文件
 		
