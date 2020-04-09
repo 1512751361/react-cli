@@ -28,10 +28,10 @@
 
 ### 1. webpack配置
 
-	1. 安装webpack
+  1. 安装webpack
 		
 		npm i webpack webpack-cli -D
-    		npm i webpack-merge -D
+    npm i webpack-merge -D
 
 	2. 配置webpack文件
 		
@@ -44,17 +44,20 @@
 			build/webpack.prod.js
 			// 测试环境webpack文件
 			build/webpack.stag.js
+      
 		2. 创建环境变量文件
 			config/process.env.js
  		
 	3. 执行webpack命令
 		
-		// 在package.json中scripts添加执行命令
-		`"scripts": {
-			"dev": "webpack-dev-server --config build/webpack.dev.js --progress --colors",
-    		"build:prod": "webpack --config build/webpack.prod.js --progress --colors",
-    		"build:stage": "webpack --config build/webpack.prod.js --progress --colors",
-		}`	
+    // 在package.json中scripts添加执行命令
+    ```
+      "scripts": {
+        "dev": "webpack-dev-server --config build/webpack.dev.js --progress --colors",
+        "build:prod": "webpack --config build/webpack.prod.js --progress --colors",
+        "build:stage": "webpack --config build/webpack.prod.js --progress --colors",
+      }
+    ```	
 		
 		// 运行
 		npm run dev
@@ -67,11 +70,11 @@
 
 ### 2. 模块(module)
 
-	在 ```module``` 选项主要就是设置 ```webpack``` 中常用的 ```loaders```。通过 ```rules``` 规则来匹配具体应用的文件和loaders或者修改解析器（parser）。
+  在 ```module``` 选项主要就是设置 ```webpack``` 中常用的 ```loaders```。通过 ```rules``` 规则来匹配具体应用的文件和loaders或者修改解析器（parser）。
 
-	1. module.noParse 防止预编译匹配规则
+  1. module.noParse 防止预编译匹配规则
 
-		``` noParse: RegExp | [RegExp] | function ```
+    ``` noParse: RegExp | [RegExp] | function ```
 	
 	2. ```module.rules``` 设置匹配规则
 
@@ -122,11 +125,11 @@
 
 ### 3. loader 编译设置
 
-	在 ```webpack2``` 的时候，主要写法是根据 ```loaders``` 和 ```loader``` 来进行设定的。不过，在 ```webpack 3``` 改为根据文件来决定 ```loader``` 的加载。这其中，最大的特点就是，将 ```loaders``` 替换为了 ```rules```。
+  在 ```webpack2``` 的时候，主要写法是根据 ```loaders``` 和 ```loader``` 来进行设定的。不过，在 ```webpack 3``` 改为根据文件来决定 ```loader``` 的加载。这其中，最大的特点就是，将 ```loaders``` 替换为了 ```rules```。
 
-	按照规范，```use``` 是用来时间引入 ```loader``` 的标签。在 ```webpack 3 ``` 时代，还保留了 ```loader``` 字段，废除了 ```query``` 字段，其实可以在 ```use``` 中找到替代。
+  按照规范，```use``` 是用来时间引入 ```loader``` 的标签。在 ```webpack 3 ``` 时代，还保留了 ```loader``` 字段，废除了 ```query``` 字段，其实可以在 ```use``` 中找到替代。
 
-	1. loader
+  1. loader
 	
 		用来定义具体使用的 ```loader```，这里等同于：```use:[loader]```。
 
@@ -158,83 +161,86 @@
 
 ### 4. babel 配置
 
-	```babel``` 是一个 ```JavaScript```` 编译器，用来解析 ```es6``` 语法或者 ```es7``` 语法分解析器，让开发者能够使用新的 ```es``` 语法，同时支持 ```jsx, tsx, vue``` 等多种框架。
+  ```babel``` 是一个 ```JavaScript```` 编译器，用来解析 ```es6``` 语法或者 ```es7``` 语法分解析器，让开发者能够使用新的 ```es``` 语法，同时支持 ```jsx, tsx, vue``` 等多种框架。
 
-	1. 安装babel
+  1. 安装babel
 		
     // 加载 ES2015+ 代码，然后使用 Babel 转译为 ES5
-		```npm i @babel/core babel-loader -D```
+    ```npm i @babel/core babel-loader -D```
 
     // 像 JavaScript 一样加载 TypeScript 2.0+
     ``` npm i ts-loader -D ``` 或者 ``` npm i awesome-typescript-loader -D```
 
 	2. 配置babel文件: .babelrc 或者 配置到 babel-loader options 中
 
-		`{
-		    "presets": [
-		      "@babel/preset-env",
+    ```
+    {
+        "presets": [
+          "@babel/preset-env",
           "@babel/preset-react",
           "state-0"
-		    ],
-		    "plugins": []
-		}`
+        ],
+        "plugins": []
+    }
+    ```
 
-		```babel``` 支持自定义的预设(presets)或插件(plugins),只有配置了这两个才能让babel生效，单独的安装babel是无意义的。
+    ```babel``` 支持自定义的预设(presets)或插件(plugins),只有配置了这两个才能让babel生效，单独的安装babel是无意义的。
 
-		```presets```：代表 ```babel``` 支持那种语法(就是你用那种语法写)，优先级是从下往上,state-0|1|2|..代表有很多没有列入标准的语法
+    ```presets```：代表 ```babel``` 支持那种语法(就是你用那种语法写)，优先级是从下往上,state-0|1|2|..代表有很多没有列入标准的语法
 
-		```plugins```: 代表 ```babel``` 解析的时候使用哪些插件，作用和 ```presets```` 类似，优先级是从上往下。
+    ```plugins```: 代表 ```babel``` 解析的时候使用哪些插件，作用和 ```presets```` 类似，优先级是从上往下。
 	
-		3. @babel/preset-env
 
-			表示将 ```JavaScript es6``` 语法代码编译为 ```es5``` 语法		
+  3. @babel/preset-env
 
-		4. @babel/preset-react
+    表示将 ```JavaScript es6``` 语法代码编译为 ```es5``` 语法		
 
-			表示将 ```JSX``` 和其他东西编译到 ```JavaScript``` 中
+  4. @babel/preset-react
 
-		6. @babel/plugin-transform-runtime @babel/runtime
+    表示将 ```JSX``` 和其他东西编译到 ```JavaScript``` 中
 
-			Babel 对一些公共方法使用了非常小的辅助代码，比如 _extend。默认情况下会被添加到每一个需要它的文件中
-			
-			你可以引入 Babel runtime 作为一个独立模块，来避免重复引入。
+  6. @babel/plugin-transform-runtime @babel/runtime
 
-			下面的配置禁用了 Babel 自动对每个文件的 runtime 注入，而是引入 @babel/plugin-transform-runtime 并且使所有辅助代码从这里引用。
+    Babel 对一些公共方法使用了非常小的辅助代码，比如 _extend。默认情况下会被添加到每一个需要它的文件中
+    
+    你可以引入 Babel runtime 作为一个独立模块，来避免重复引入。
 
-			```npm i @babel/runtime @babel/plugin-transform-runtime -D``
+    下面的配置禁用了 Babel 自动对每个文件的 runtime 注入，而是引入 @babel/plugin-transform-runtime 并且使所有辅助代码从这里引用。
 
-		7. babel-polyfill
+    ```npm i @babel/runtime @babel/plugin-transform-runtime -D``
 
-			我们之前使用的 ```babel，babel-loader``` 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译。如果想使用这些新的对象和方法，必须使用 babel-polyfill，为当前环境提供一个垫片。
+  7. babel-polyfill
 
-			```npm i babel-polyfill -D```
-			
-		8. @babel/plugin-proposal-object-rest-spread
-		
-			编译解析 ... 对象语法
-			```
-			let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
-			console.log(x); // 1
-			console.log(y); // 2
-			console.log(z); // { a: 3, b: 4 }
-			```
+    我们之前使用的 ```babel，babel-loader``` 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译。如果想使用这些新的对象和方法，必须使用 babel-polyfill，为当前环境提供一个垫片。
 
-		9. @babel/plugin-proposal-class-properties
+    ```npm i babel-polyfill -D```
+    
+  8. @babel/plugin-proposal-object-rest-spread
+  
+    编译解析 ... 对象语法
+    ```
+    let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+    console.log(x); // 1
+    console.log(y); // 2
+    console.log(z); // { a: 3, b: 4 }
+    ```
 
-			// 编译解析 class 类中的箭头函数
-			```npm i @babel/plugin-proposal-class-properties -D```
+  9. @babel/plugin-proposal-class-properties
 
-		10. @babel/plugin-syntax-dynamic-import
+    // 编译解析 class 类中的箭头函数
+    ```npm i @babel/plugin-proposal-class-properties -D```
 
-			// 编译解析 动态导入资源
+  10. @babel/plugin-syntax-dynamic-import
+
+    // 编译解析 动态导入资源
 
 ### 5. loader 加载资源
 
-	1. 处理css loader
+  1. 处理css loader
 
 	  1. 加载资源
 
-			```npm i style-loader css-loader sass-loader node-sass -D```
+      ```npm i style-loader css-loader sass-loader node-sass -D```
     
     2. 添加css打包分离压缩去重
 
@@ -242,11 +248,11 @@
       npm i mini-css-extract-plugin optimize-css-assets-webpack-plugin postcss-loader autoprefixer postcss-import cssnano -D
       
       // 添加提取css插件
-      // 配置 ```css loader``` ，配置 ```plugins``` 打包文件名和出口路径
+      // 配置 css loader ，配置 plugins 打包文件名和出口路径
 			npm i mini-css-extract-plugin -D
 
 			// 添加css压缩、去重插件
-      // ```optimization.minimizer``` 添加插件
+      // optimization.minimizer 添加插件
 			npm i optimize-css-assets-webpack-plugin -D
 
 			// 添加用于Webpack处理带有Postss的CSS的加载程序
@@ -259,7 +265,7 @@
 			npm i postcss-import -D
 
 			// 添加css优化处理器
-      // 用于添加 ```optimize-css-assets-webpack-plugin``` 插件添加 ```optimization.minimizer``` 配置
+      // 用于添加 optimize-css-assets-webpack-plugin 插件添加 optimization.minimizer 配置
 			npm i cssnano -D
       ```
 
