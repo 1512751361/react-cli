@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-restricted-syntax */
-import sagaEffects from 'redux-saga/effects';
+import * as sagaEffects from 'redux-saga/effects';
+import { Saga } from 'redux-saga';
 import { ActionBuildOptions, EffectsBuildOptions } from '../typings';
 
 /**
@@ -9,7 +9,7 @@ import { ActionBuildOptions, EffectsBuildOptions } from '../typings';
  * @param {EffectsBuildOptions<T>} effects saga集合方法
  * @returns {Function} saga
  */
-const getWatcher = function <T> (key: string, effects: EffectsBuildOptions<T>): Function {
+const getWatcher = function <T> (key: string, effects: EffectsBuildOptions<T>): Saga {
   let effect = effects;
   let type = 'takeEvery';
   let opts;
@@ -50,12 +50,12 @@ export const makeSagaCreator = function <T> (
     [key: string]: EffectsBuildOptions<T>;
   },
   namespace: string,
-): Function {
+): Saga {
   return function * () {
     for (const key in effects) {
       if (Object.prototype.hasOwnProperty.call(effects, key)) {
         const watcher = getWatcher(`${namespace}/${key}`, effects[key]);
-        const task = yield sagaEffects.fork(watcher as any);
+        const task: any = yield sagaEffects.fork(watcher);
 
         // ${namespace}/@@CANCEL_EFFECTS 取消该命名空间内的所有saga
         yield sagaEffects.fork(function * () {

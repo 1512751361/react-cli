@@ -53,14 +53,15 @@ function formatRoutes(
  * @param {RegExp} match 文件正则匹配规则
  * @returns {RouteConfigBuildOptions[]} 获取路由配置集合
  */
-export const importDynamicRoutes = (
-  root = '../../page',
-  match = /^\.\/((?!\/)[\s\S])+\/route\.(js|ts)$/,
-): RouteConfigBuildOptions[] => {
-  const resolve = require.context(root, true, match);
+export const importDynamicRoutes = (): RouteConfigBuildOptions[] => {
+  // context 方法参数 不可使用变量和模版字符控制
+  const resolve = require.context('../../page', true, /^\.(\/((?!\/)[\s\S])*)?\/route\.(js|ts)$/);
+
+  console.log(resolve, resolve.keys());
   const routes: RouteConfigBuildOptions[] = resolve
     .keys()
-    .map((key: string) => resolve(key).default);
+    .reduce((res, key) => res.concat(resolve(key).default), [])
+    .filter((o) => o);
 
   return formatRoutes(routes);
 };

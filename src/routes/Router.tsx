@@ -1,8 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Switch, Router } from 'react-router-dom';
+import {
+  BrowserRouter, Switch, Router,
+} from 'react-router-dom';
 import history from '@util/history';
 import { renderRoutes } from './RouteWithSubRoutes';
 import { rootRoutes } from './method/dynamic-loader';
+
+console.log(rootRoutes);
 
 /**
  * @description 路由配置

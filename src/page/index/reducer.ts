@@ -1,9 +1,21 @@
 import { ActionBuildOptions } from '@/redux/typings';
 
-// const namespace = 'page/index';
+// export const namespace = 'page/index';
 
-// const initialState = {};
+export const initialState = {
+  visibilityFilter: 'SHOW_ALL',
+  todos: [
+    {
+      text: 'Consider using Redux',
+      completed: true,
+    },
+    {
+      text: 'Keep all state in a single tree',
+      completed: false,
+    },
+  ],
+};
 
 export default {
-  update: (state: object, action: ActionBuildOptions) => ({ ...state, ...action.payload }),
+  updateState: (state: object, action: ActionBuildOptions) => ({ ...state, ...action.payload }),
 };

@@ -1,3 +1,4 @@
+import React from 'react';
 import loadable from '@loadable/component';
 import {
   ComponentBuildOptions,
@@ -36,9 +37,9 @@ export const checkRouteRoles = (
 export const loadableComponent = (
   component: ComponentBuildOptions,
   dir = 'page/',
-): Function => {
+): React.ComponentType<any> => {
   if (typeof component === 'string') {
-    return loadable(() => import(`../${dir}${component}`));
+    return loadable(() => import(`../../${dir}${component}`));
   }
   return component;
 };

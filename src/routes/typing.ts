@@ -1,6 +1,7 @@
+import React from 'react';
 import { Route } from 'react-router';
 
-export type ComponentBuildOptions = Function | string;
+export type ComponentBuildOptions = React.ComponentType<any> | string;
 
 export interface MetaBuildOptions {
   // 路由权限列表

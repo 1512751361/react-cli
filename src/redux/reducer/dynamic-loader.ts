@@ -1,8 +1,5 @@
-import camelCase from 'lodash/camelCase';
 import { createReducer } from './creator';
 import { ImportDynamicReducersResult } from '../typings';
-
-window.require = require;
 
 /**
  * @description 动态导入 reducers
@@ -10,22 +7,15 @@ window.require = require;
  * @param {RegExp} match 动态匹配规则
  * @returns {ImportDynamicReducersResult<T>} reducers集合
  */
-export const importDynamicReducers = function<T> (
-  root = '../../page',
-  match = /\/reducer.(js|ts)$/,
-): ImportDynamicReducersResult<T> {
+export const importDynamicReducers = function<T> (): ImportDynamicReducersResult<T> {
   const modules: ImportDynamicReducersResult<T> = {};
-
-  console.log(root);
-  const resolve = require.context('../../page', true, match);
+  // context 方法参数 不可使用变量和模版字符控制
+  const resolve = require.context('../../../src', true, /\/reducer.(js|ts)$/);
 
   resolve.keys().forEach((key: string) => {
-    const basename = key.substring(
-      key.lastIndexOf('/', key.lastIndexOf('/') - 1),
-      key.lastIndexOf('/'),
-    );
-    const reducerName = camelCase(basename);
-    const namespace = resolve(key).namespace || reducerName;
+    const basename = key.substring(2, key.lastIndexOf('/'));
+
+    const namespace = resolve(key).namespace || basename;
     const initialState = resolve(key).initialState || {};
 
     modules[namespace] = createReducer(initialState, resolve(key).default);

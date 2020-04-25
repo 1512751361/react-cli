@@ -1,15 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-use-before-define */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React from 'react';
 import camelCase from 'lodash/camelCase';
-import { useLocation, RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { Route, Redirect } from 'react-router-dom';
-import {
-  RouterProps,
-  RouteWithSubRoutesProps,
-  RouteConfigBuildOptions,
-} from './typing';
+import { RouterProps, RouteWithSubRoutesProps, RouteConfigBuildOptions } from './typing';
 import { checkRouteRoles, loadableComponent } from './method/helper';
 
 /**
@@ -18,28 +13,16 @@ import { checkRouteRoles, loadableComponent } from './method/helper';
  * @returns {JSX.Element} 路由组件
  */
 export const RouteWithSubRoutes = function (props: RouteWithSubRoutesProps): JSX.Element {
-  const location = useLocation();
+  const { route, routerProps } = props;
+  const { authPath, rolePath } = routerProps;
   const {
-    route,
-    routerProps,
-  } = props;
-  const {
-    authPath,
-    rolePath,
-  } = routerProps;
-  const {
-    component,
-    path,
-    childRoutes,
-    exactProps,
-    render,
-    isChild,
-    ...other
+    component, path, childRoutes, exactProps, render, isChild, ...other
   } = route;
 
   return (
     <Route
-      {...other}
+      {...(other || {})}
+      key={path}
       path={path}
       // component={component}
       render={(routeProps: RouteComponentProps<any>) => {
@@ -55,7 +38,7 @@ export const RouteWithSubRoutes = function (props: RouteWithSubRoutesProps): JSX
             <Redirect
               to={{
                 pathname: authPath,
-                state: { from: location },
+                state: { from: routeProps.location },
               }}
             />
           );
@@ -66,7 +49,7 @@ export const RouteWithSubRoutes = function (props: RouteWithSubRoutesProps): JSX
             <Redirect
               to={{
                 pathname: rolePath,
-                state: { from: location },
+                state: { from: routeProps.location },
               }}
             />
           );
@@ -119,11 +102,15 @@ export const renderRoutes = function (
   if (!routes) {
     return null;
   }
-  return routes.filter((o) => o).map((route) => (
-    <RouteWithSubRoutes
-      key={camelCase(route.path)}
-      route={route}
-      routerProps={props}
-    />
-  ));
+  return routes.map((route) => {
+    console.log(route);
+    return RouteWithSubRoutes({ route, routerProps: props });
+    // return (
+    //   <RouteWithSubRoutes
+    //     key={`route${camelCase(route.path)}`}
+    //     route={route}
+    //     routerProps={props}
+    //   />
+    // );
+  });
 };

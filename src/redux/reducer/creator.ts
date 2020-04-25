@@ -8,17 +8,17 @@ import { ActionBuildOptions } from '../typings';
  * @param {object} handlers 方法集合
  * @returns {Function} Reducers
  */
-export const createReducer = function <T, U = object> (
+export const createReducer = function <T, U> (
   initialState: T,
   handlers: {
-    [key: string]: (state: T, payload?: U) => T;
+    [key: string]: (state: T, payload?: U | object) => T;
   },
 ) {
   return function (state: T = initialState, action: ActionBuildOptions<U>) {
     const { type, payload } = action;
 
     if (type in handlers) {
-      return handlers[type](state, payload);
+      return handlers[type](state, payload || {});
     }
     return state;
   };

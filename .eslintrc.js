@@ -22,7 +22,7 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
-    require: 'readonly',
+    // require: 'readonly',
     process: 'readonly'
   },
   // 解析器配置
@@ -354,7 +354,7 @@ module.exports = {
     'react/jsx-key': 2, // 在数组或迭代器中验证JSX具有key属性
     'react/jsx-no-bind': 0, // JSX中不允许使用箭头函数和bind
     'react/jsx-no-duplicate-props': 2, // 防止在JSX中重复的props
-    'react/jsx-no-literals': 2, // 防止使用未包装的JSX字符串
+    'react/jsx-no-literals': 1, // 防止使用未包装的JSX字符串
     'react/jsx-no-undef': 2, // 在JSX中禁止未声明的变量
     'react/jsx-pascal-case': 2, // 为用户定义的JSX组件强制使用PascalCase
     'react/jsx-uses-react': 2, // 防止反应被错误地标记为未使用
@@ -434,7 +434,7 @@ module.exports = {
       allowExpressions: true
     }],
     // any类型时的警告报错
-    "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/no-explicit-any": 1,
     // 关闭接口不能以 I 为前缀
     "@typescript-eslint/interface-name-prefix": 0,
 

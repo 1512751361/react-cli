@@ -1,6 +1,31 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { CallEffect } from 'redux-saga/effects';
+import {
+  CallEffect,
+} from 'redux-saga/effects';
 import { Reducer } from 'redux';
+
+interface EffectsCallback {
+  takeEvery: Function;
+  takeLatest: Function;
+  takeLeading: Function;
+  throttle: Function;
+
+  take: Function;
+  put: Function;
+  call: Function;
+  apply: Function;
+  cps: Function;
+  fork: Function;
+  spawn: Function;
+  join: Function;
+  cancel: Function;
+  select: Function;
+  actionChannel: Function;
+  flush: Function;
+  cancelled: Function;
+
+  race: Function;
+  all: Function;
+}
 
 export interface ActionBuildOptions<T = object> {
   type: string;
@@ -9,9 +34,13 @@ export interface ActionBuildOptions<T = object> {
 
 export type EffectsBuildOptions<T> = (
   action: ActionBuildOptions<T>,
-  effects: any
-) => CallEffect | [(action: ActionBuildOptions<T>, effects: any) => CallEffect, { type: string }];
+  effects: EffectsCallback
+) => Generator;
 
 export interface ImportDynamicReducersResult<T> {
-  [key: string]: Reducer<T, ActionBuildOptions>;
+  [namespace: string]: Reducer<T, ActionBuildOptions>;
+}
+
+export interface SagasBuildOptions<T> {
+  [key: string]: EffectsBuildOptions<T>;
 }
