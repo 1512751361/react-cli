@@ -13,6 +13,7 @@ import {
   Reducer,
 } from 'redux';
 import createSagaMiddleware, { SagaMiddleware, Saga } from 'redux-saga';
+import { createLogger } from 'redux-logger';
 
 interface CreateStoreBuildOptions {
   reducers: Reducer;
@@ -42,7 +43,8 @@ export default function ({ reducers, initialState, sagas }: CreateStoreBuildOpti
 
   if (process.env.NODE_ENV === 'development') {
     // 添加 logger 中间件
-    const { logger } = require('redux-logger');
+    // const { logger } = require('redux-logger');
+    const logger = createLogger({ collapsed: true });
 
     middlewares.push(logger);
   }

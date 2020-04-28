@@ -22,7 +22,7 @@ const getWatcher = function <T> (key: string, effects: EffectsBuildOptions<T>): 
   }
   function * sagaWithCatch(
     action: ActionBuildOptions<T>,
-  ): Iterator<any> {
+  ): Generator {
     yield sagaEffects.put({ type: `${key}/@@start` });
     yield effect(action, sagaEffects);
     yield sagaEffects.put({ type: `${key}/@@end` });

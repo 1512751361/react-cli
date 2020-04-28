@@ -1,6 +1,3 @@
-import {
-  CallEffect,
-} from 'redux-saga/effects';
 import { Reducer } from 'redux';
 
 interface EffectsCallback {

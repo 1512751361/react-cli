@@ -12,6 +12,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // 压缩js
 const TerserPlugin = require('terser-webpack-plugin');
+// 分析模块大小
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   mode: 'production',
@@ -189,8 +191,13 @@ module.exports = {
           reuseExistingChunk: true,
         },
         react: {
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          test: /[\\/]node_modules[\\/](react)[\\/]/,
           name: 'static/js/chunk-react',
+          priority: 20,
+        },
+        reactDom: {
+          test: /[\\/]node_modules[\\/](react-dom)[\\/]/,
+          name: 'static/js/chunk-react-dom',
           priority: 20,
         },
         vendors: {
@@ -228,5 +235,6 @@ module.exports = {
       filename: 'static/css/[name].[hash:8].css',
       chunkFilename: 'static/css/[id].[hash:8].css',
     }),
+    // new BundleAnalyzerPlugin(),
   ],
 };
