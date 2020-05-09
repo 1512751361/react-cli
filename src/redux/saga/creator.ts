@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import * as sagaEffects from 'redux-saga/effects';
 import { Saga } from 'redux-saga';
-import { ActionBuildOptions, EffectsBuildOptions } from '../typings';
+import { ActionBuildOptions, EffectsBuildOptions } from './typings';
 
 /**
  * @description 处理saga方法

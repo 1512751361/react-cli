@@ -45,8 +45,11 @@
     "baseUrl": ".", /* 模块名到基于 baseUrl的路径映射的列表。 */
     "resolveJsonModule": true,
     "paths": {
-      "@/*": [
+      "@src/*": [
         "src/*"
+      ],
+      "@page/*": [
+        "src/page/*"
       ],
       "@util/*": [
         "src/util/*"
@@ -89,11 +92,12 @@
   },
   "compileOnSave": true, /* 在最顶层设置compileOnSave标记，可以让IDE在保存文件的时候根据tsconfig.json重新生成文件 */
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "doc",
+    "__tests__"
   ],
   "include": [
     "src",
-    "**/*.ts",
-    "**/*.js"
+    // "__tests__"
   ]
 }

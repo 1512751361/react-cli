@@ -106,7 +106,8 @@ module.exports = {
       '@util': path.resolve(__dirname, '..', 'src/util'),
       '@common': path.resolve(__dirname, '..', 'src/common'),
       '@components': path.resolve(__dirname, '..', 'src/components'),
-      '@': path.resolve(__dirname, '..', 'src'),
+      '@page': path.resolve(__dirname, '..', 'src/page'),
+      '@src': path.resolve(__dirname, '..', 'src'),
     },
   },
   // 告知 webpack 为目标(target)指定一个环境

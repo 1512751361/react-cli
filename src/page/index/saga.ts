@@ -1,4 +1,4 @@
-import { SagasBuildOptions } from '@/redux/typings';
+import { SagasBuildOptions } from '@src/redux/saga/typings';
 
 const delay = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 1000 * 5));
 

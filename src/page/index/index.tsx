@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import App from './components/App';
 
 const hello = 'hello world';
 const Index = (props: any): JSX.Element => (
   <div>
+    <App />
     <span>hello world</span>
     <span>{hello}</span>
     <pre>{JSON.stringify(props, null, 4)}</pre>

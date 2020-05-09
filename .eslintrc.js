@@ -35,7 +35,7 @@ module.exports = {
     ecmaVersion: 2019,
     sourceType: 'module',
     project: './tsconfig.json',
-    tsconfigRootDir: './',
+    tsconfigRootDir: './'
     // extraFileExtensions: ['.ts', '.tsx', '.js']
   },
   // 第三方插件
@@ -68,7 +68,7 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'no-control-regex': 2, // 禁止在正则表达式中使用控制字符 ：new RegExp("\x1f")
     'linebreak-style': ['error', 'unix'], // 此规则强制执行统一的行结尾，而不受操作系统，VCS 或整个代码库中使用的编辑器的影响
-    indent: ["error", 2, { "SwitchCase": 1 }], // 空格2个
+    indent: ['error', 2, { SwitchCase: 1 }], // 空格2个
     'array-bracket-spacing': 2, // 指定数组的元素之间要以空格隔开(,后面)
     'brace-style': [2, '1tbs', { allowSingleLine: true }], // if while function 后面的{必须与if在同一行，java风格。
     'no-irregular-whitespace': 2, // 不规则的空白不允许
@@ -343,6 +343,8 @@ module.exports = {
     // React.相关 start//
     //////////////
     'jsx-quotes': [2, 'prefer-double'], //强制在JSX属性（jsx-quotes）中一致使用双引号
+    'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
     'react/jsx-props-no-spreading': 0,
     'react/display-name': 2, // 防止在React组件定义中丢失displayName
     'react/forbid-prop-types': [2, { forbid: ['any'] }], // 禁止某些propTypes
@@ -384,10 +386,12 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.tsx'] }],
     // 不区分是否是 无状态组件
     'react/prefer-stateless-function': 2,
-    'jsx-a11y/click-events-have-key-events': 2,
-    'jsx-a11y/no-noninteractive-element-interactions': 2,
     'import/no-extraneous-dependencies': 2,
-    'import/no-unresolved': [2, { ignore: ['^@/', '^@util', '^@common', '^@components'] }],
+    'import/prefer-default-export': 1,
+    'import/no-unresolved': [
+      2,
+      { ignore: ['^@src', '^@page', '^@util', '^@common', '^@components'] }
+    ],
     'import/extensions': [
       'error',
       'always',
@@ -420,7 +424,7 @@ module.exports = {
     'new-parens': 2,
     // 此规则强制执行，其中空线都需要或禁止后一种编码风格var，let或const语句来实现整个项目一致的编码风格。
     'newline-after-var': 2,
-    'switch-colon-spacing': ["error", {"after": true, "before": false}],
+    'switch-colon-spacing': ['error', { after: true, before: false }],
     //////////////
     // ES6.相关  end//
     //////////////
@@ -430,13 +434,16 @@ module.exports = {
     //////////////
 
     // 只要求自定义的方法设置返回类型
-    "@typescript-eslint/explicit-function-return-type": [2, {
-      allowExpressions: true
-    }],
+    '@typescript-eslint/explicit-function-return-type': [
+      2,
+      {
+        allowExpressions: true
+      }
+    ],
     // any类型时的警告报错
-    "@typescript-eslint/no-explicit-any": 1,
+    '@typescript-eslint/no-explicit-any': 1,
     // 关闭接口不能以 I 为前缀
-    "@typescript-eslint/interface-name-prefix": 0,
+    '@typescript-eslint/interface-name-prefix': 0
 
     //////////////
     // typescript.相关  end//

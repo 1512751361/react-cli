@@ -1,4 +1,4 @@
-import { RouteConfigBuildOptions } from '@/routes/typing';
+import { RouteConfigBuildOptions } from '@src/routes/typing';
 
 const routes: RouteConfigBuildOptions[] = [
   {
