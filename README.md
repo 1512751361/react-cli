@@ -1,4 +1,8 @@
-# react-cli
+# webpack 搭建简单 ```React``` 项目
+
+## 前言
+
+这是基于 webpack 4.0 实现的react框架，其中包含项目常用的配置，webpack打包分离压缩优化处理，可供快速开发使用.
 
 ## 目录结构
 
