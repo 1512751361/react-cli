@@ -1,4 +1,9 @@
 import { ReducerBuildOptions } from '@src/redux/reducer/typings';
+import {
+  ADD_TODO,
+  TOGGLE_TODO,
+  SET_VISIBILITY_FILTER,
+} from './actions';
 
 export interface ModalState {
   visibilityFilter: string;
@@ -27,14 +32,14 @@ export const initialState: ModalState = {
 
 export interface ModalReducers {
   updateState: ReducerBuildOptions<ModalState, ModalState>;
-  TOGGLE_TODO: ReducerBuildOptions<ModalState, { id: number }>;
-  ADD_TODO: ReducerBuildOptions<ModalState, { id: number; text: string }>;
-  SET_VISIBILITY_FILTER: ReducerBuildOptions<ModalState>;
+  [TOGGLE_TODO]: ReducerBuildOptions<ModalState, { id: number }>;
+  [ADD_TODO]: ReducerBuildOptions<ModalState, { id: number; text: string }>;
+  [SET_VISIBILITY_FILTER]: ReducerBuildOptions<ModalState>;
 }
 
 const reducers: ModalReducers = {
   updateState: (state, { payload }) => ({ ...state, ...payload }),
-  TOGGLE_TODO: (state, { payload }) => {
+  [TOGGLE_TODO]: (state, { payload }) => {
     const { todos } = state;
 
     return {
@@ -47,7 +52,7 @@ const reducers: ModalReducers = {
         : todo)),
     };
   },
-  ADD_TODO: (state, { payload }) => ({
+  [ADD_TODO]: (state, { payload }) => ({
     ...state,
     todos: state.todos.concat({
       id: payload?.id || Math.random(),
@@ -55,7 +60,7 @@ const reducers: ModalReducers = {
       completed: false,
     }),
   }),
-  SET_VISIBILITY_FILTER: (state, { payload }) => ({
+  [SET_VISIBILITY_FILTER]: (state, { payload }) => ({
     ...state,
     ...payload,
   }),
