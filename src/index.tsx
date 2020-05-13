@@ -6,7 +6,8 @@ import configureStore from './redux/store';
 // 引入路由文件
 import Router from './routes';
 // 引入全局样式表
-// import '@src/styles/index.scss';
+import '@src/styles/reset.scss';
+import '@src/styles/global.scss';
 // 创建store
 const store = configureStore();
 

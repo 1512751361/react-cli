@@ -390,7 +390,7 @@ module.exports = {
     'import/prefer-default-export': 1,
     'import/no-unresolved': [
       2,
-      { ignore: ['^@src', '^@page', '^@util', '^@common', '^@components'] }
+      { ignore: ['^@src', '^@pages', '^@util', '^@common', '^@components'] }
     ],
     'import/extensions': [
       'error',

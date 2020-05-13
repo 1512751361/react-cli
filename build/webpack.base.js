@@ -106,7 +106,7 @@ module.exports = {
       '@util': path.resolve(__dirname, '..', 'src/util'),
       '@common': path.resolve(__dirname, '..', 'src/common'),
       '@components': path.resolve(__dirname, '..', 'src/components'),
-      '@page': path.resolve(__dirname, '..', 'src/page'),
+      '@pages': path.resolve(__dirname, '..', 'src/pages'),
       '@src': path.resolve(__dirname, '..', 'src'),
     },
   },

@@ -36,7 +36,7 @@ export const checkRouteRoles = (
  */
 export const loadableComponent = (
   component: ComponentBuildOptions,
-  dir = 'page/',
+  dir = 'pages/',
 ): React.ComponentType<any> => {
   if (typeof component === 'string') {
     return loadable(() => import(`../../${dir}${component}`));

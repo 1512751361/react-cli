@@ -7,6 +7,10 @@ const routes: RouteConfigBuildOptions[] = [
     exact: true,
   },
   {
+    path: '/hooks',
+    component: 'hooks',
+  },
+  {
     path: '/404',
     component: '404',
   },

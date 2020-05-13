@@ -55,7 +55,7 @@ function formatRoutes(
  */
 export const importDynamicRoutes = (): RouteConfigBuildOptions[] => {
   // context 方法参数 不可使用变量和模版字符控制
-  const resolve = require.context('../../page', true, /^\.(\/((?!\/)[\s\S])*)?\/route\.(js|ts)$/);
+  const resolve = require.context('../../pages', true, /^\.(\/((?!\/)[\s\S])*)?\/route\.(js|ts)$/);
 
   console.log(resolve, resolve.keys());
   const routes: RouteConfigBuildOptions[] = resolve

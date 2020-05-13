@@ -94,7 +94,7 @@ module.exports = {
   // 从正则表达式到模块名或模块名数组的映射，允许使用单个模块来存根资源
   moduleNameMapper: {
     '^@src(.*)$': '<rootDir>/src$1',
-    '^@page(.*)$': '<rootDir>/src/page$1',
+    '^@pages(.*)$': '<rootDir>/src/pages$1',
     '^@util(.*)$': '<rootDir>/src/util$1',
     '^@common(.*)$': '<rootDir>/src/common$1',
     '^@components(.*)$': '<rootDir>/src/components$1',

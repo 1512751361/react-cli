@@ -1,6 +1,6 @@
 let nextTodoId = 2;
 
-export const namespace = 'page/index';
+export const namespace = 'pages/index';
 
 export const addTodo = (text: string): object => {
   nextTodoId += 1;

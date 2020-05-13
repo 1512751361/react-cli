@@ -5,8 +5,8 @@ const delay = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 
 const sagas: SagasBuildOptions<any> = {
   * login(arg, { put, take }) {
     console.log('login:', arg, 1);
-    yield put({ type: 'page/index/timeout' });
-    yield take('page/index/timeout/@@end');
+    yield put({ type: 'pages/index/timeout' });
+    yield take('pages/index/timeout/@@end');
     console.log('login', 'ff', 2);
     yield 1;
   },
@@ -15,7 +15,7 @@ const sagas: SagasBuildOptions<any> = {
     yield call(delay);
     console.log('timeout', payload, 4);
     yield 1;
-    yield put({ type: 'page/index/timeout/@@end' });
+    yield put({ type: 'pages/index/timeout/@@end' });
   },
 };
 

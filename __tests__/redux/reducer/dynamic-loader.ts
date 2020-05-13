@@ -10,6 +10,6 @@ describe('test importDynamicReducers function', () => {
     // const module = importDynamicReducers();
     // expect(createReducer).toHaveBeenCalled();
     // expect(createReducer).toHaveBeenCalledTimes(2);
-    // expect(module['page/index']).toEqual(createReducer);
+    // expect(module['pages/index']).toEqual(createReducer);
   });
 });

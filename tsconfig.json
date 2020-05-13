@@ -48,8 +48,8 @@
       "@src/*": [
         "src/*"
       ],
-      "@page/*": [
-        "src/page/*"
+      "@pages/*": [
+        "src/pages/*"
       ],
       "@util/*": [
         "src/util/*"

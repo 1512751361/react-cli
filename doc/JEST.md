@@ -57,7 +57,7 @@
     {
       moduleNameMapper: {
         '^@src(.*)$': '<rootDir>/src$1',
-        '^@page(.*)$': '<rootDir>/src/page$1',
+        '^@pages(.*)$': '<rootDir>/src/pages$1',
         '^@util(.*)$': '<rootDir>/src/util$1',
         '^@common(.*)$': '<rootDir>/src/common$1',
         '^@components(.*)$': '<rootDir>/src/components$1',

@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow, configure, } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import App from '@page/index/components/App';
-import AddTodo from '@page/index/containers/AddTodo';
-import Footer from '@page/index/components/Footer';
-import VisibleTodoList from '@page/index/containers/VisibleTodoList';
+import App from '@src/pages/index/components/App';
+import AddTodo from '@src/pages/index/containers/AddTodo';
+import Footer from '@src/pages/index/components/Footer';
+import VisibleTodoList from '@src/pages/index/containers/VisibleTodoList';
 
 configure({ adapter: new Adapter() });
 
