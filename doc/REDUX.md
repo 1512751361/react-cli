@@ -1,4 +1,4 @@
-# Redux
+# ```Redux``` 基础教程
 
 ### 前言
 
@@ -13,70 +13,68 @@
 
   ```npm i redux -S```
 
-  ```npm i react-redux -S```
-
 ### 核心概念
 
-1. ```state```
+#### 1. ```state```
 
-    单一数据源原则：整个应用的 ```state``` 数据都被储存在一棵 ```object tree``` 中，并且这个 ```object tree``` 只存在于唯一一个 ```store``` 中。
+  单一数据源原则：整个应用的 ```state``` 数据都被储存在一棵 ```object tree``` 中，并且这个 ```object tree``` 只存在于唯一一个 ```store``` 中。
 
-    ```state``` 其实就是一个普通的 ```JSON``` 对象。该对象包含 ```redux``` 的所有数据。
-    
-    当前的 ```state```，可以通过 ```store.getState()``` 获取。
+  ```state``` 其实就是一个普通的 ```JSON``` 对象。该对象包含 ```redux``` 的所有数据。
+  
+  当前的 ```state```，可以通过 ```store.getState()``` 获取。
 
-    ```Redux``` 规定， 一个 ```State``` 对应一个 ```View```。只要 ```State``` 相同，```View``` 就相同。你知道 ```State```，就知道 ```View``` 是什么样，反之亦然。
+  ```Redux``` 规定， 一个 ```State``` 对应一个 ```View```。只要 ```State``` 相同，```View``` 就相同。你知道 ```State```，就知道 ```View``` 是什么样，反之亦然。
 
-    建议定义 ```state tree``` 层级结构不要太深。
+  建议定义 ```state tree``` 层级结构不要太深。
 
-    ```
-    {
-      text: 'text 文本',
-      todos: [1,2,3,4]
+  ```
+  {
+    text: 'text 文本',
+    todos: [1,2,3,4]
+  }
+  ```
+
+#### 2. ```action```
+
+  ```State``` 只读原则：唯一改变 ```state``` 的方法就是触发 ```action```，```action``` 是一个用于描述已发生事件的普通对象。
+
+  我们约定：```action``` 内必须使用一个字符串类型的 ```type``` 字段来表示将要执行的动作。通常其他参数用 ```payload``` 字段来存储以便管理方便，结构清晰。
+
+  ```
+  const ADD_TODO = 'ADD_TODO'
+
+  // action
+  {
+    type: ADD_TODO,
+    payload: {
+      text: 'Build my first action'
     }
-    ```
+  }
+  ```
 
-2. ```action```
+#### 3. ```Action``` 创建函数
 
-    ```State``` 只读原则：唯一改变 ```state``` 的方法就是触发 ```action```，```action``` 是一个用于描述已发生事件的普通对象。
+  ```Action``` 创建函数其实就是生成 ```action``` 的方法。“action” 和 “action 创建函数” 这两个概念很容易混在一起，使用时最好注意区分。
 
-    我们约定：```action``` 内必须使用一个字符串类型的 ```type``` 字段来表示将要执行的动作。通常其他参数用 ```payload``` 字段来存储以便管理方便，结构清晰。
+  有时候改变多少消息是，就会有多少个 ```action```。如果每次都写一遍类似的操作，就会显得繁琐、麻烦。我们可以通过定义一个函数来生成一个 ```Action```，这个函数就叫 ```Action``` 创建函数。
 
-    ```
-    const ADD_TODO = 'ADD_TODO'
+  ```
+  const updateText = 'updateText'
 
-    // action
-    {
-      type: ADD_TODO,
+  // action 创建函数
+  function addTodo(text) {
+    return {
+      type: updateText,
       payload: {
-        text: 'Build my first action'
+        text,
       }
     }
-    ```
+  }
 
-3. ```Action``` 创建函数
+  const action = addTodo('Action Creator');
+  ```
 
-    ```Action``` 创建函数其实就是生成 ```action``` 的方法。“action” 和 “action 创建函数” 这两个概念很容易混在一起，使用时最好注意区分。
-
-    有时候改变多少消息是，就会有多少个 ```action```。如果每次都写一遍类似的操作，就会显得繁琐、麻烦。我们可以通过定义一个函数来生成一个 ```Action```，这个函数就叫 ```Action``` 创建函数。
-
-    ```
-    const updateText = 'updateText'
-
-    // action 创建函数
-    function addTodo(text) {
-      return {
-        type: updateText,
-        payload: {
-          text,
-        }
-      }
-    }
-
-    const action = addTodo('Action Creator');
-    ```
-
-4. ```Reducer```
+#### 4. ```Reducer```
 
   使用纯函数修改```state```原则：为了描述 ```action``` 如何改变 ```state tree``` ，你需要编写 ```reducers```。
 
@@ -111,7 +109,7 @@
   }
   ```
 
-5. ```Store```
+#### 5. ```Store```
 
   使用 ```action``` 来描述“发生了什么”，和使用 ```reducers``` 来根据 ```action``` 更新 ```state``` 的用法。```Store``` 就是把它们联系到一起的对象。```Store``` 有以下职责：
 
@@ -132,4 +130,412 @@
   4. 最后 ```Store``` 根据新的 ```state tree``` 重新渲染 ```View```。
 
 
-### 
+### ```React``` 集成 ```Redux```
+
+#### 1. 介绍
+
+  前面我们介绍了 ```redux``` 的核心概念和工作流程，接着我们介绍 ```React``` 集成 ```Redux``` 功能。
+
+  首先，安装 ```Redux``` 的 ```React``` 绑定库：
+
+  ```npm i react-redux -S```
+
+  为了让页面的所以容器组件都可以访问 ```Redux store```，所以可以手动监听它。
+  
+  一种方式是把它以 ```props``` 的形式传入到所有容器组件中。但这太麻烦了，因为必须要用 ```store``` 把展示组件包裹一层，仅仅是因为恰好在组件树中渲染了一个容器组件。
+
+  还有就是使用 ```React Redux``` 组件 ```<Provider>``` 来让所有容器组件都可以访问 ```store```，而不必显示地传递它。(推荐使用)。
+
+#### 2. ```Demo``` 例子
+
+1. 展示组件
+
+  纯UI展示组件，没有任何交互逻辑，并不关心数据来源和如何改变。
+
+  ```
+  components/Todo.tsx
+  ```
+  ```
+  import React from 'react';
+
+  interface IProps {
+    text: string;
+    completed: boolean;
+    onClick?: (e: React.MouseEvent) => void;}
+
+  export default function Todo({
+    onClick,
+    completed,
+    text,
+  }: IProps): JSX.Element {
+    return (
+      <li
+        onClick={onClick}
+        style={{
+          textDecoration: completed ? 'line-through' : 'none',
+        }}
+      >
+        {text}
+      </li>
+    );
+  }
+  ```
+
+  ```
+  components/TodoList.tsx
+  ```
+  ```
+  import React from 'react';
+  import Todo from './Todo';
+
+  interface IProps {
+    todos: any[];
+    onTodoClick: (id: number) => void;
+  }
+
+  export default function TodoList({
+    todos,
+    onTodoClick,
+  }: IProps): JSX.Element {
+    return (
+      <ul>
+        {todos.map((todo) => (
+          <Todo key={todo.id} {...todo} onClick={() => onTodoClick(todo.id)} />
+        ))}
+      </ul>
+    );
+  }
+  ```
+
+  ```
+  components/Link.tsx
+  ```
+  ```
+  import React from 'react';
+
+  interface IProps {
+    active: boolean;
+    children: any;
+    onClick: () => void;
+  }
+
+  export default function Link({
+    active,
+    children,
+    onClick,
+  }: IProps): JSX.Element {
+    if (active) {
+      return <span>{children}</span>;
+    }
+
+    return (
+      <a
+        href="javascript(0);"
+        onClick={(e) => {
+          e.preventDefault();
+          onClick();
+        }}
+      >
+        {children}
+      </a>
+    );
+  }
+  ```
+
+  ```
+  components/Footer.tsx
+  ```
+  ```
+  import React from 'react';
+  import FilterLink from '../containers/FilterLink';
+
+  const Footer = (): JSX.Element => (
+    <p>
+      Show:
+      {' '}
+      <FilterLink filter="SHOW_ALL">
+        All
+      </FilterLink>
+      {', '}
+      <FilterLink filter="SHOW_ACTIVE">
+        Active
+      </FilterLink>
+      {', '}
+      <FilterLink filter="SHOW_COMPLETED">
+        Completed
+      </FilterLink>
+    </p>
+  );
+
+  export default Footer;
+  ```
+
+2. 容器组件
+
+  把 **展示组件** 连接到 ```Redux```。
+
+  ```
+  containers/FilterLink.tsx
+  ```
+  ```
+  import { connect } from 'react-redux';
+  import { setVisibilityFilter, namespace } from '../actions';
+  import Link from '../components/Link';
+
+  const mapStateToProps = (state: any, ownProps: any): object => ({
+    active: ownProps.filter === state[namespace].visibilityFilter,
+  });
+
+  const mapDispatchToProps = (dispatch: any, ownProps: any): object => ({
+    onClick: () => {
+      dispatch(setVisibilityFilter(ownProps.filter));
+    },
+  });
+
+  const FilterLink = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Link);
+
+  export default FilterLink;
+  ```
+
+  ```
+  containers/VisibleTodoList.tsx
+  ```
+  ```
+  import { connect } from 'react-redux';
+  import { toggleTodo, namespace } from '../actions';
+  import TodoList from '../components/TodoList';
+
+  const getVisibleTodos = (todos: any[], filter: string): any[] => {
+    switch (filter) {
+      case 'SHOW_COMPLETED':
+        return todos.filter((t) => t.completed);
+      case 'SHOW_ACTIVE':
+        return todos.filter((t) => !t.completed);
+      case 'SHOW_ALL':
+      default:
+        return todos;
+    }
+  };
+
+  const mapStateToProps = (state: any): { todos: any[] } => ({
+    todos: getVisibleTodos(state[namespace].todos, state[namespace].visibilityFilter),
+  });
+
+  interface TDispatchProps {
+    onTodoClick: (id: number) => void;
+  }
+
+  const mapDispatchToProps = (dispatch: any): TDispatchProps => ({
+    onTodoClick: (id: number) => {
+      dispatch(toggleTodo(id));
+    },
+  });
+
+  const VisibleTodoList = connect<
+    {
+      todos: any[];
+    },
+    TDispatchProps,
+    any
+  >(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(TodoList);
+
+  export default VisibleTodoList;
+  ```
+
+  ```
+  containers/AddTodo.tsx
+  ```
+  ```
+  import React from 'react';
+  import { connect } from 'react-redux';
+  import { addTodo } from '../actions';
+
+  interface IProps {
+    onAddClick: (text: string) => void;
+  }
+
+  export const AddTodo = ({ onAddClick }: IProps): JSX.Element => {
+    let input: any = null;
+
+    return (
+      <div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!input.value.trim()) {
+              return;
+            }
+            onAddClick(input.value);
+            input.value = '';
+          }}
+        >
+          <input
+            ref={(node) => {
+              input = node;
+            }}
+          />
+          <button type="submit">Add Todo</button>
+        </form>
+      </div>
+    );
+  };
+
+  export default connect(undefined, (dispatch: any) => ({
+    onAddClick: (text: string) => dispatch(addTodo(text)),
+  }))(AddTodo);
+  ```
+
+3. ```action```
+
+  书写需要的 ```action```。
+
+  ```
+  let nextTodoId = 2;
+
+  export const namespace = 'pages/index';
+
+  export const ADD_TODO = 'ADD_TODO';
+  export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+  export const TOGGLE_TODO = 'TOGGLE_TODO';
+
+  export const addTodo = (text: string): object => {
+    nextTodoId += 1;
+    return {
+      type: ADD_TODO,
+      payload: {
+        id: nextTodoId,
+        text,
+      },
+    };
+  };
+
+  export const setVisibilityFilter = (filter: string): object => ({
+    type: SET_VISIBILITY_FILTER,
+    payload: {
+      filter,
+    },
+  });
+
+  export const toggleTodo = (id: number): object => ({
+    type: TOGGLE_TODO,
+    payload: {
+      id,
+    },
+  });
+
+  ```
+
+4. ```Reducer```
+
+  书写 ```Reducer``` 更新 ```state tree``。
+
+  ```
+  import { ReducerBuildOptions } from '@src/redux/reducer/typings';
+  import {
+    ADD_TODO,
+    TOGGLE_TODO,
+    SET_VISIBILITY_FILTER,
+    namespace,
+  } from './actions';
+
+  export interface ModalState {
+    visibilityFilter: string;
+    todos: {
+      id: number;
+      text?: string;
+      completed?: boolean;
+    }[];
+  }
+
+  export const initialState: ModalState = {
+    visibilityFilter: 'SHOW_ALL',
+    todos: [
+      {
+        id: 1,
+        text: 'Consider using Redux',
+        completed: true,
+      },
+      {
+        id: 2,
+        text: 'Keep all state in a single tree',
+        completed: false,
+      },
+    ],
+  };
+
+  export interface ModalReducers {
+    updateState: ReducerBuildOptions<ModalState, ModalState>;
+    [TOGGLE_TODO]: ReducerBuildOptions<ModalState, { id: number }>;
+    [ADD_TODO]: ReducerBuildOptions<ModalState, { id: number; text: string }>;
+    [SET_VISIBILITY_FILTER]: ReducerBuildOptions<ModalState>;
+  }
+
+  const reducers: ModalReducers = {
+    updateState: (state, { payload }) => ({ ...state, ...payload }),
+    [TOGGLE_TODO]: (state, { payload }) => {
+      const { todos } = state;
+
+      return {
+        ...state,
+        todos: todos.map((todo) => (todo.id === payload?.id
+          ? {
+            ...todo,
+            completed: !todo.completed,
+          }
+          : todo)),
+      };
+    },
+    [ADD_TODO]: (state, { payload }) => ({
+      ...state,
+      todos: state.todos.concat({
+        id: payload?.id || Math.random(),
+        text: payload?.text,
+        completed: false,
+      }),
+    }),
+    [SET_VISIBILITY_FILTER]: (state, { payload }) => ({
+      ...state,
+      ...payload,
+    }),
+  };
+
+  const createReducer = (initialState, handlers) =>(state = initialState, action){
+    const { type } = action;
+
+    if (type in handlers) {
+      return handlers[type](state, action);
+    }
+    return state;
+  }
+
+  export default combineReducers({
+    [namespace]: createReducer(initialState,reducers)
+  });
+  ```
+
+5. ```React``` 集成 ```Redux```
+
+  ```
+  import React from 'react'
+  import { render } from 'react-dom'
+  import { Provider } from 'react-redux'
+  import { createStore } from 'redux'
+  // 你的 reducer 集合
+  import reducers from './reducers'
+  import App from './components/App'
+
+  let store = createStore(reducers)
+
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root')
+  )
+  ```

@@ -6,7 +6,11 @@ interface IProps {
   onClick: () => void;
 }
 
-export default function Link({ active, children, onClick }: IProps): JSX.Element {
+export default function Link({
+  active,
+  children,
+  onClick,
+}: IProps): JSX.Element {
   if (active) {
     return <span>{children}</span>;
   }

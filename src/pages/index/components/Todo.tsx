@@ -5,7 +5,11 @@ interface IProps {
   completed: boolean;
   onClick?: (e: React.MouseEvent) => void;}
 
-export default function Todo({ onClick, completed, text }: IProps): JSX.Element {
+export default function Todo({
+  onClick,
+  completed,
+  text,
+}: IProps): JSX.Element {
   return (
     <li
       onClick={onClick}

@@ -6,7 +6,10 @@ interface IProps {
   onTodoClick: (id: number) => void;
 }
 
-export default function TodoList({ todos, onTodoClick }: IProps): JSX.Element {
+export default function TodoList({
+  todos,
+  onTodoClick,
+}: IProps): JSX.Element {
   return (
     <ul>
       {todos.map((todo) => (
