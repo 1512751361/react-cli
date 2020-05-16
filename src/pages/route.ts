@@ -7,6 +7,10 @@ const routes: RouteConfigBuildOptions[] = [
     exact: true,
   },
   {
+    path: '/reduxDemo',
+    component: 'reduxDemo',
+  },
+  {
     path: '/hooks',
     component: 'hooks',
   },

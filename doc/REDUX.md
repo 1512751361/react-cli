@@ -140,13 +140,106 @@
 
   ```npm i react-redux -S```
 
-  为了让页面的所以容器组件都可以访问 ```Redux store```，所以可以手动监听它。
+  为了让页面的所有容器组件都可以访问 ```Redux store```，所以可以手动监听它。
   
   一种方式是把它以 ```props``` 的形式传入到所有容器组件中。但这太麻烦了，因为必须要用 ```store``` 把展示组件包裹一层，仅仅是因为恰好在组件树中渲染了一个容器组件。
 
   还有就是使用 ```React Redux``` 组件 ```<Provider>``` 来让所有容器组件都可以访问 ```store```，而不必显示地传递它。(推荐使用)。
 
-#### 2. ```Demo``` 例子
+#### 2. 纯 ```Redux``` 例子
+
+  这里需要再强调一下: ```Redux``` 和 ```React``` 之间没有关系。```Redux``` 支持 ```React、Angular、Ember、jQuery``` 甚至纯 ```JavaScript```。
+
+  尽管如此，```Redux``` 还是和 ```React``` 和 ```Deku``` 这类库搭配起来用最好，因为这类库允许你以 ```state``` 函数的形式来描述界面，```Redux``` 通过 ```action``` 的形式来发起 ```state``` 变化。
+
+  这里我们介绍一下单纯使用 ```Redux``` 来实现其用法：
+
+1. ```store``` 管理
+
+  ```
+  reduxDemo/store.ts
+  ```
+
+  ```
+  import { createStore, Store, Reducer } from 'redux';
+
+  interface IState {
+    num: number;
+  }
+
+  const initState = {
+    num: 1,
+  };
+
+  const reducers: Reducer<IState> = (state = initState, action) => {
+    switch (action.type) {
+      case 'add':
+        return {
+          ...state,
+          num: state.num + 1,
+        };
+      case 'minus':
+        return {
+          ...state,
+          num: state.num - 1,
+        };
+      default:
+        return state;
+    }
+  };
+
+  const store: Store<IState> = createStore(reducers);
+
+  export default store;
+
+  ```
+
+2. 组件
+
+  ```
+  reduxDemo/index.tsx
+  ```
+
+  ```
+  import * as React from 'react';
+  import { Unsubscribe } from 'redux';
+  import store from './store';
+
+  class Index extends React.PureComponent {
+    subscribe?: Unsubscribe;
+
+    componentDidMount(): void {
+      this.subscribe = store.subscribe(() => {
+        this.forceUpdate();
+      });
+    }
+
+    componentWillUnmount(): void {
+      if (this.subscribe) {
+        this.subscribe();
+      }
+    }
+
+    render(): JSX.Element {
+      return (
+        <div>
+          <div>{store.getState().num}</div>
+          <button type="button" onClick={() => store.dispatch({ type: 'add' })}>加一</button>
+          <button type="button" onClick={() => store.dispatch({ type: 'minus' })}>减一</button>
+        </div>
+      );
+    }
+  }
+
+  export default Index;
+
+  ```
+
+#### 3. 使用 ```react-redux``` 例子
+
+  通过上面的例子我们看到单纯在 ```React``` 项目中使用  ```Redux```，我们还需要手动监听 ```Store``` 中 ```state``` 的变化和取消监听，然后在手动进行强制更新重新渲染组件。
+
+  接着我们举例使用在 ```React``` 项目中使用 ```react-redux``` 绑定库例子：
 
 1. 展示组件
 

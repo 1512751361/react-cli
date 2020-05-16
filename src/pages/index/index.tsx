@@ -15,6 +15,7 @@ const Index = (props: any): JSX.Element => (
     <Link to="/404">404</Link>
     <Link to="/403">403</Link>
     <Link to="/hooks">hooks</Link>
+    <Link to="/reduxDemo">reduxDemo</Link>
   </div>
 );
 

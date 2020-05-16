@@ -1,4 +1,3 @@
-import { initialState } from '@src/pages/index/reducer';
 import { ActionBuildOptions, ReducerBuildOptions } from './typings';
 
 /**
