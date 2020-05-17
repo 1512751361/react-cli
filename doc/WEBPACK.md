@@ -499,3 +499,7 @@
 6. 添加一下规则
 
 7. lerna + storybook
+
+### 结束语
+
+  本文档主要介绍 Webpack API 的一些使用，如需了解 ```Webpack`` 查看 [用webpack搭建前端项目的一点点心得](https://juejin.im/post/5ebe74ae6fb9a0437b76f116 "用webpack搭建前端项目的一点点心得")了解更多。

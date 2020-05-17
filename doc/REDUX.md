@@ -632,3 +632,10 @@
     document.getElementById('root')
   )
   ```
+
+### 后续的计划
+
+  1. ```Redux``` 高级教程，其中包含异步流数据处理，动态读取 ```reducer``` 和 ```saga```
+  2. 手写实现 ```Redux```。
+  ...
+

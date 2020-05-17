@@ -21,7 +21,7 @@ Payload,
     const namespace: string = resolve(key).namespace || basename;
     const initialState = resolve(key).initialState || {};
 
-    modules[namespace] = createReducer(initialState, resolve(key).default);
+    modules[namespace] = createReducer(namespace, initialState, resolve(key).default);
   });
   return modules;
 };
