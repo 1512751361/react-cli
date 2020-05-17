@@ -10,7 +10,7 @@ import { makeSagaCreator } from './creator';
 export const importDynamicSagas = function (): Array<Saga> {
   const modules: Array<Saga> = [];
   // context 方法参数 不可使用变量和模版字符控制
-  const resolve = require.context('../../../src', true, /\/saga\.(js|ts)$/);
+  const resolve = require.context('../../../src', true, /(sagas\/.+|\/saga)\.[jt]s$/);
 
   resolve.keys().forEach((key: string) => {
     const basename = key.substring(2, key.lastIndexOf('/'));

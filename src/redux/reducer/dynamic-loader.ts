@@ -13,7 +13,7 @@ Payload,
 > (): ImportDynamicReducersResult<State, Payload> {
   const modules: ImportDynamicReducersResult<State, Payload> = {};
   // context 方法参数 不可使用变量和模版字符控制
-  const resolve = require.context('../../../src', true, /\/reducer.(js|ts)$/);
+  const resolve = require.context('../../../src', true, /(reducers\/.+|\/reducer)\.[jt]s$/);
 
   resolve.keys().forEach((key: string) => {
     const basename = key.substring(2, key.lastIndexOf('/'));

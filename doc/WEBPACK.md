@@ -17,12 +17,11 @@
   │   ├── common/                   分析包大小    
   │   ├── components/               公共组件模块   
   │   ├── pages/                    页面模块    
-  │   ├── routes/                   路由配置模块    
-  │   ├── webpack.base.config.js    webpack基础配置    
-  ├── src                           源码
-  │   ├── pages                       页面组件
-  │   ├── ...												  其它
-  │   ├── index.tsx                   入口文件
+  │   ├── routes/                   路由配置模块
+  │   ├── redux/                    redux配置模块
+  │   ├── styles/                   样式
+  │   ├── util/                     公共方法
+  │   ├── type.d.ts/                ts声明文件
   ├── .babelrc                      babel 配置
   ├── .eslintrc.js                  eslint 配置
   ├── .gitignore                    忽略提交到git目录文件
