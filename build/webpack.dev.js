@@ -49,6 +49,7 @@ const config = {
         changeOrigin: true,
       },
     },
+    clientLogLevel: 'none',
   },
   module: {
     rules: [

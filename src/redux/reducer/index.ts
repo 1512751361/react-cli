@@ -1,9 +1,11 @@
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 
 import { importDynamicReducers } from './dynamic-loader';
 
 export { default as createReducer } from './creator';
 
-const reducers = importDynamicReducers();
+export default (): Reducer => {
+  const reducers = importDynamicReducers();
 
-export default combineReducers(reducers);
+  return combineReducers(reducers);
+};

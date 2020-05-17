@@ -70,4 +70,4 @@ export const importDynamicRoutes = (): RouteConfigBuildOptions[] => {
  * @description 动态加载路由-路由集合
  * @returns {RouteConfigBuildOptions[]} 获取路由配置集合
  */
-export const rootRoutes: RouteConfigBuildOptions[] = importDynamicRoutes();
+export const getRootRoutes = (): RouteConfigBuildOptions[] => importDynamicRoutes();

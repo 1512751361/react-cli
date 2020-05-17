@@ -10,8 +10,8 @@ const Index = (props: any): JSX.Element => (
     <span>hello world</span>
     <span>{hello}</span>
     <pre>{JSON.stringify(props, null, 4)}</pre>
-    <button onClick={() => props.dispatch({ type: 'updateState' })}>onClick</button>
-    <button onClick={() => props.dispatch({ type: 'pages/index/login' })}>onClick</button>
+    <button type="button" onClick={() => props.dispatch({ type: 'updateState' })}>onClick</button>
+    <button type="button" onClick={() => props.dispatch({ type: 'pages/index/login' })}>onClick</button>
     <Link to="/404">404</Link>
     <Link to="/403">403</Link>
     <Link to="/hooks">hooks</Link>
