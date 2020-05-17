@@ -7,28 +7,30 @@
 ## 目录结构
 
   ```
-  |———— build                     webpack配置文件
-  |———— config/                   配置文件
-  |———— dist/                     项目打包文件
-  |———— node_modules/             第三方模块	
-  |———— public/                   HTML模板
-  |———— src/                      项目目录
-  |     |———— common/             公共模块
-  |     |———— components/         公共组件模块
-  |     |———— modules/            页面模块
-  |     |———— routes/             路由配置模块
-  |     |———— store/              redux配置模块
-  |     |———— styles/             全局样式表模块
-  |     |———— util/               全局方法模块
-  |     |———— index.js            入口页面
-  |———— test/                     测试代码模块
-  |———— .babelrc                  webpack babel配置文件
-  |———— .gitignore                git代码管理配置模块
-  |———— .eslintrc.js              eslint配置文件
-  |———— package.json              包管理
-  |———— README.md                 说明文件
-  ```
+  ├── build                         webpack配置文件
+  ├── config/                       配置文件
+  ├── dist/                         项目打包文件
+  ├── node_modules/                 第三方模块
+  ├── public/                       HTML模板
+  ├── doc/                          项目文档
+  ├── src/                          项目目录
+  │   ├── common/                   分析包大小    
+  │   ├── components/               公共组件模块   
+  │   ├── pages/                    页面模块    
+  │   ├── routes/                   路由配置模块    
+  │   ├── webpack.base.config.js    webpack基础配置    
+  ├── src                           源码
+  │   ├── pages                       页面组件
+  │   ├── ...												  其它
+  │   ├── index.tsx                   入口文件
+  ├── .babelrc                      babel 配置
+  ├── .eslintrc.js                  eslint 配置
+  ├── .gitignore                    忽略提交到git目录文件
+  ├── package.json                  依赖包及配置信息文件
+  ├── tsconfig.json                 typescript 配置
+  ├── README.md                     描述文件
 
+  ```
 
 ## webpack 配置
 
