@@ -1,4 +1,4 @@
-import { ReducerBuildOptions } from '@src/redux/reducer/typings';
+import { ModelReducers } from '@src/redux/typings';
 import {
   ADD_TODO,
   TOGGLE_TODO,
@@ -30,14 +30,14 @@ export const initialState: ModalState = {
   ],
 };
 
-export interface ModalReducers {
-  updateState: ReducerBuildOptions<ModalState, ModalState>;
-  [TOGGLE_TODO]: ReducerBuildOptions<ModalState, { id: number }>;
-  [ADD_TODO]: ReducerBuildOptions<ModalState, { id: number; text: string }>;
-  [SET_VISIBILITY_FILTER]: ReducerBuildOptions<ModalState>;
+interface ReducerPayload {
+  updateState: ModalState;
+  [TOGGLE_TODO]: { id: number };
+  [ADD_TODO]: { id: number; text: string };
+  [SET_VISIBILITY_FILTER]: ModalState;
 }
 
-const reducers: ModalReducers = {
+const reducers: ModelReducers<ModalState, ReducerPayload> = {
   updateState: (state, { payload }) => ({ ...state, ...payload }),
   [TOGGLE_TODO]: (state, { payload }) => {
     const { todos } = state;

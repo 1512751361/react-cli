@@ -4,9 +4,10 @@ import {
 } from 'react-router-dom';
 import history from '@util/history';
 import { renderRoutes } from './RouteWithSubRoutes';
-import { getRootRoutes } from './method/dynamic-loader';
+import rootRoutes from './config';
+// import { getRootRoutes } from './method/dynamic-loader';
 
-const rootRoutes = getRootRoutes();
+// const rootRoutes = getRootRoutes();
 
 /**
  * @description 路由配置

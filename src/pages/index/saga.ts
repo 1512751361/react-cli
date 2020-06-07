@@ -1,10 +1,23 @@
-import { SagasBuildOptions } from '@src/redux/saga/typings';
+import { ModelSagas } from '@src/redux/typings';
+
+interface Sagas {
+  login: {
+    param: object;
+    type: string;
+  };
+  timeout: {
+    param: object;
+    type: string;
+    resolve: Function;
+    reject: Function;
+  };
+}
 
 const delay = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 1000 * 5));
 
-const sagas: SagasBuildOptions<any> = {
-  * login(arg, { put, take }) {
-    console.log('login:', arg, 1);
+const sagas: ModelSagas<Sagas> = {
+  * login({ payload }, { put, take }) {
+    console.log('login:', payload, 1);
     yield put({ type: 'pages/index/timeout' });
     yield take('pages/index/timeout/@@end');
     console.log('login', 'ff', 2);
@@ -15,7 +28,12 @@ const sagas: SagasBuildOptions<any> = {
     yield call(delay);
     console.log('timeout', payload, 4);
     yield 1;
-    yield put({ type: 'pages/index/timeout/@@end' });
+    yield put({
+      type: 'updateState',
+      payload: {
+        visibilityFilter: 'visibilityFilter',
+      },
+    });
   },
 };
 

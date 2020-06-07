@@ -23,7 +23,7 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
     // require: 'readonly',
-    process: 'readonly'
+    process: 'readonly',
   },
   // 解析器配置
   parserOptions: {
