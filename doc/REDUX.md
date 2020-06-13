@@ -537,7 +537,7 @@
     namespace,
   } from './actions';
 
-  export interface ModalState {
+  export interface ModelState {
     visibilityFilter: string;
     todos: {
       id: number;
@@ -546,7 +546,7 @@
     }[];
   }
 
-  export const initialState: ModalState = {
+  export const initialState: ModelState = {
     visibilityFilter: 'SHOW_ALL',
     todos: [
       {
@@ -563,10 +563,10 @@
   };
 
   export interface ModalReducers {
-    updateState: ReducerBuildOptions<ModalState, ModalState>;
-    [TOGGLE_TODO]: ReducerBuildOptions<ModalState, { id: number }>;
-    [ADD_TODO]: ReducerBuildOptions<ModalState, { id: number; text: string }>;
-    [SET_VISIBILITY_FILTER]: ReducerBuildOptions<ModalState>;
+    updateState: ReducerBuildOptions<ModelState, ModelState>;
+    [TOGGLE_TODO]: ReducerBuildOptions<ModelState, { id: number }>;
+    [ADD_TODO]: ReducerBuildOptions<ModelState, { id: number; text: string }>;
+    [SET_VISIBILITY_FILTER]: ReducerBuildOptions<ModelState>;
   }
 
   const reducers: ModalReducers = {

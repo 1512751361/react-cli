@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import reduxComponent from '@src/common/redux/connect';
-import { PageType } from '@src/common/redux/typings';
+import { ReduxComponentPageType } from '@src/common/redux/typings';
 import App from './components/App';
 import { namespace } from './actions';
 
 const hello = 'hello world';
-const Index = (props: PageType): JSX.Element => {
+const Index = (props: ReduxComponentPageType): JSX.Element => {
   useEffect(() => {
     if (props?.emit) {
       props.emit('timeout');

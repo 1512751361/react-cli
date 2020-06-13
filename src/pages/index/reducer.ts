@@ -5,16 +5,18 @@ import {
   SET_VISIBILITY_FILTER,
 } from './actions';
 
-export interface ModalState {
-  visibilityFilter: string;
-  todos: {
-    id: number;
-    text?: string;
-    completed?: boolean;
-  }[];
+export interface TodoItem {
+  id: number;
+  text?: string;
+  completed?: boolean;
 }
 
-export const initialState: ModalState = {
+export interface ModelState {
+  visibilityFilter: string;
+  todos: TodoItem[];
+}
+
+export const initialState: ModelState = {
   visibilityFilter: 'SHOW_ALL',
   todos: [
     {
@@ -31,13 +33,13 @@ export const initialState: ModalState = {
 };
 
 interface ReducerPayload {
-  updateState: ModalState;
+  updateState: ModelState;
   [TOGGLE_TODO]: { id: number };
   [ADD_TODO]: { id: number; text: string };
-  [SET_VISIBILITY_FILTER]: ModalState;
+  [SET_VISIBILITY_FILTER]: { filter: string };
 }
 
-const reducers: ModelReducers<ModalState, ReducerPayload> = {
+const reducers: ModelReducers<ModelState, ReducerPayload> = {
   updateState: (state, { payload }) => ({ ...state, ...payload }),
   [TOGGLE_TODO]: (state, { payload }) => {
     const { todos } = state;
@@ -62,7 +64,7 @@ const reducers: ModelReducers<ModalState, ReducerPayload> = {
   }),
   [SET_VISIBILITY_FILTER]: (state, { payload }) => ({
     ...state,
-    ...payload,
+    visibilityFilter: payload?.filter as string,
   }),
 };
 

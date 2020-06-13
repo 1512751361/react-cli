@@ -1,6 +1,7 @@
-import { connect } from 'react-redux';
-import { toggleTodo, namespace } from '../actions';
+import reduxComponent from '@src/common/redux/connect';
+import { namespace, TOGGLE_TODO } from '../actions';
 import TodoList from '../components/TodoList';
+import { ModelState, TodoItem } from '../reducer';
 
 const getVisibleTodos = (todos: any[], filter: string): any[] => {
   switch (filter) {
@@ -14,29 +15,18 @@ const getVisibleTodos = (todos: any[], filter: string): any[] => {
   }
 };
 
-const mapStateToProps = (state: any): { todos: any[] } => ({
-  todos: getVisibleTodos(state[namespace].todos, state[namespace].visibilityFilter),
-});
-
 interface TDispatchProps {
   onTodoClick: (id: number) => void;
 }
 
-const mapDispatchToProps = (dispatch: any): TDispatchProps => ({
-  onTodoClick: (id: number) => {
-    dispatch(toggleTodo(id));
-  },
-});
-
-const VisibleTodoList = connect<
-  {
-    todos: any[];
-  },
-  TDispatchProps,
-  any
->(
-  mapStateToProps,
-  mapDispatchToProps,
+const VisibleTodoList = reduxComponent<ModelState, { todos: TodoItem[] }, TDispatchProps>(
+  namespace,
+  (state) => ({
+    todos: getVisibleTodos(state.todos, state.visibilityFilter),
+  }),
+  ({ emit }) => ({
+    onTodoClick: (id: number) => emit(TOGGLE_TODO, { id }),
+  }),
 )(TodoList);
 
 export default VisibleTodoList;

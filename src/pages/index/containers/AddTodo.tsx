@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { addTodo } from '../actions';
+import reduxComponent from '@src/common/redux/connect';
+import { namespace, ADD_TODO } from '../actions';
 
 interface IProps {
   onAddClick: (text: string) => void;
@@ -32,6 +32,6 @@ export const AddTodo = ({ onAddClick }: IProps): JSX.Element => {
   );
 };
 
-export default connect(undefined, (dispatch: any) => ({
-  onAddClick: (text: string) => dispatch(addTodo(text)),
+export default reduxComponent<{}, {}, IProps>(namespace, () => ({}), ({ emit }) => ({
+  onAddClick: (text: string) => emit(ADD_TODO, { id: Math.floor(Math.random() * 10000), text }),
 }))(AddTodo);

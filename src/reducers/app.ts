@@ -4,20 +4,20 @@ import {
   CLEAR_STATE,
 } from '@src/actions/app';
 
-export interface ModalState {
+export interface ModelState {
   spinLoading: boolean;
 }
 
-export const initialState: ModalState = {
+export const initialState: ModelState = {
   spinLoading: false,
 };
 
 interface ReducerPayload {
-  [UPDATE_STATE]: ModalState;
-  [CLEAR_STATE]: ModalState;
+  [UPDATE_STATE]: ModelState;
+  [CLEAR_STATE]: ModelState;
 }
 
-const reducers: ModelReducers<ModalState, ReducerPayload> = {
+const reducers: ModelReducers<ModelState, ReducerPayload> = {
   [UPDATE_STATE]: (state, { payload }) => ({ ...state, ...payload }),
   [CLEAR_STATE]: () => initialState,
 };

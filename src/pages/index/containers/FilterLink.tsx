@@ -1,20 +1,30 @@
-import { connect } from 'react-redux';
-import { setVisibilityFilter, namespace } from '../actions';
+import reduxComponent from '@src/common/redux/connect';
+import { namespace, SET_VISIBILITY_FILTER } from '../actions';
 import Link from '../components/Link';
+import { ModelState } from '../reducer';
 
-const mapStateToProps = (state: any, ownProps: any): object => ({
-  active: ownProps.filter === state[namespace].visibilityFilter,
+interface TStateProps {
+  active: boolean;
+}
+
+interface TDispatchProps {
+  onClick: () => void;
+}
+
+interface TOwnProps {
+  filter: string;
+}
+
+const mapStateToProps = (state: ModelState, ownProps: any): TStateProps => ({
+  active: ownProps.filter === state.visibilityFilter,
 });
 
-const mapDispatchToProps = (dispatch: any, ownProps: any): object => ({
-  onClick: () => {
-    dispatch(setVisibilityFilter(ownProps.filter));
-  },
-});
-
-const FilterLink = connect(
+const FilterLink = reduxComponent<ModelState, TStateProps, TDispatchProps, TOwnProps>(
+  namespace,
   mapStateToProps,
-  mapDispatchToProps,
+  ({ emit }, { filter }) => ({
+    onClick: () => emit(SET_VISIBILITY_FILTER, { filter }),
+  }),
 )(Link);
 
 export default FilterLink;
