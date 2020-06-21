@@ -10,6 +10,7 @@ export default function TodoList({
   todos,
   onTodoClick,
 }: IProps): JSX.Element {
+
   return (
     <ul>
       {todos.map((todo) => (

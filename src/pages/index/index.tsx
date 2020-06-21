@@ -8,8 +8,8 @@ import { namespace } from './actions';
 const hello = 'hello world';
 const Index = (props: ReduxComponentPageType): JSX.Element => {
   useEffect(() => {
-    if (props?.emit) {
-      props.emit('timeout');
+    if (props?.spinWrapper) {
+      props.spinWrapper('timeout');
     }
   }, []);
   const [loading, setLoading] = useState(false);
@@ -32,6 +32,16 @@ const Index = (props: ReduxComponentPageType): JSX.Element => {
         }}
       >
         async
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          if (props?.emit) {
+            props.emit('login');
+          }
+        }}
+      >
+        Login
       </button>
       <span>hello world</span>
       <span>{hello}</span>

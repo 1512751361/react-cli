@@ -16,17 +16,20 @@ interface Sagas {
 const delay = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 1000 * 5));
 
 const sagas: ModelSagas<Sagas> = {
-  * login({ payload }, { put, take }) {
+  * login({ payload }, { put, call, take }) {
     console.log('login:', payload, 1);
-    yield put({ type: 'pages/index/timeout' });
-    yield take('pages/index/timeout/@@end');
+    yield put({ type: 'timeout' });
+    yield take('timeout/@@end');
     console.log('login', 'ff', 2);
+    yield call(delay);
+    console.log('login', 'ff', 3);
     yield 1;
   },
   * timeout({ payload }, { call, put }) {
-    console.log('timeout', payload, 3);
-    yield call(delay);
     console.log('timeout', payload, 4);
+    yield call(delay);
+    yield call(delay);
+    console.log('timeout', payload, 5);
     yield 1;
     yield put({
       type: 'updateState',

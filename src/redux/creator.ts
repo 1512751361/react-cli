@@ -134,7 +134,11 @@ const getWatcher = function <T> (key: string, effects: ModelEffects<T>, model: M
     action: ModelAction<T>,
   ): Generator {
     yield sagaEffects.put({ type: `${key}/@@start` });
-    yield effect(action, createEffects(model));
+    try {
+      yield effect(action, createEffects(model));
+    } catch (error) {
+      console.log(error);
+    }
     yield sagaEffects.put({ type: `${key}/@@end` });
   }
   switch (type) {
