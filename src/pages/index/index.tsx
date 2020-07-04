@@ -13,13 +13,26 @@ const Index = (props: ReduxComponentPageType): JSX.Element => {
     }
   }, []);
   const [loading, setLoading] = useState(false);
+  const now = Date.now();
+  const [count, setCount] = useState(now);
+  useEffect(() => {
+    const fn = () =>
+      setTimeout(() => {
+        const a = (Date.now() - now) / 1000;
+        setCount(parseInt(`${a}`, 10));
+        fn();
+      }, 1000);
+
+    fn();
+  }, []);
 
   return (
     <div>
+      <h1>{count}</h1>
       <App />
       {loading && 'loading button ...'}
       <button
-        type="button"
+        type='button'
         onClick={async () => {
           setLoading(true);
           try {
@@ -29,29 +42,31 @@ const Index = (props: ReduxComponentPageType): JSX.Element => {
           } finally {
             setLoading(false);
           }
-        }}
-      >
+        }}>
         async
       </button>
       <button
-        type="button"
+        type='button'
         onClick={() => {
           if (props?.emit) {
             props.emit('login');
           }
-        }}
-      >
+        }}>
         Login
       </button>
       <span>hello world</span>
       <span>{hello}</span>
       <pre>{JSON.stringify(props, null, 4)}</pre>
-      <button type="button" onClick={() => props.dispatch({ type: 'updateState' })}>onClick</button>
-      <button type="button" onClick={() => props.dispatch({ type: 'pages/index/login' })}>onClick</button>
-      <Link to="/404">404</Link>
-      <Link to="/403">403</Link>
-      <Link to="/hooks">hooks</Link>
-      <Link to="/reduxDemo">reduxDemo</Link>
+      <button type='button' onClick={() => props.dispatch({ type: 'updateState' })}>
+        onClick
+      </button>
+      <button type='button' onClick={() => props.dispatch({ type: 'pages/index/login' })}>
+        onClick
+      </button>
+      <Link to='/404'>404</Link>
+      <Link to='/403'>403</Link>
+      <Link to='/hooks'>hooks</Link>
+      <Link to='/reduxDemo'>reduxDemo</Link>
     </div>
   );
 };

@@ -25,7 +25,7 @@ const config = {
     // 本地服务器所加载的页面所载的目录
     contentBase: './dist',
     // 域名
-    host: '127.0.0.1',
+    host: '0.0.0.0',
     // 端口号
     port: 3000,
     // 不跳转

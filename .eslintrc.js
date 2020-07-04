@@ -16,7 +16,12 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking'
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'airbnb',
+    'airbnb-typescript',
+    'prettier',
+    'prettier/react',
+    'prettier/@typescript-eslint',
   ],
   // 全局变量
   globals: {
