@@ -6,7 +6,7 @@ interface IProps {
   onAddClick: (text: string) => void;
 }
 
-export const AddTodo = ({ onAddClick }: IProps): JSX.Element => {
+const AddTodo = ({ onAddClick }: IProps): JSX.Element => {
   let input: any = null;
 
   return (

@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base');
@@ -12,12 +11,12 @@ const config = {
   mode: 'development',
   // 输出文件
   output: {
-    pathinfo: true,
+    pathinfo: true
   },
   // 配置如何展示性能提示
   performance: {
     // 定一个创建后超过 250kb 的资源，将展示一条警告
-    hints: 'warning',
+    hints: 'warning'
   },
   devtool: 'eval-source-map',
   // 配置本地服务
@@ -25,7 +24,7 @@ const config = {
     // 本地服务器所加载的页面所载的目录
     contentBase: './dist',
     // 域名
-    host: '0.0.0.0',
+    host: '127.0.0.1',
     // 端口号
     port: 3000,
     // 不跳转
@@ -46,10 +45,10 @@ const config = {
         // 如果是https接口，需要配置这个参数
         secure: false,
         // 如果接口跨域，需要进行这个参数配置
-        changeOrigin: true,
-      },
+        changeOrigin: true
+      }
     },
-    clientLogLevel: 'none',
+    clientLogLevel: 'none'
   },
   module: {
     rules: [
@@ -57,16 +56,16 @@ const config = {
         test: /\.css$/,
         use: [
           {
-            loader: 'style-loader',
+            loader: 'style-loader'
           },
-          'css-loader',
-        ],
+          'css-loader'
+        ]
       },
       {
-        test: /\.scss$/,
+        test: /\.less$/,
         use: [
           {
-            loader: 'style-loader',
+            loader: 'style-loader'
           },
           {
             loader: 'css-loader',
@@ -74,34 +73,34 @@ const config = {
               // 指定启用css modules
               import: false,
               modules: true,
-              importLoaders: 2,
-            },
+              importLoaders: 2
+            }
           },
           {
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
               sourceMap: true,
-              plugins: [require('autoprefixer')],
-            },
+              plugins: [require('autoprefixer')]
+            }
           },
           {
-            loader: 'sass-loader',
+            loader: 'less-loader',
             options: {
-              sourceMap: true,
-            },
-          },
-        ],
-      },
-    ],
+              sourceMap: true
+            }
+          }
+        ]
+      }
+    ]
   },
   // 插件
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      'process.env.BASE_API': JSON.stringify(dev.BASE_API),
-    }),
-  ],
+      'process.env.BASE_API': JSON.stringify(dev.BASE_API)
+    })
+  ]
 };
 
 module.exports = merge(baseConfig, config);

@@ -1,4 +1,4 @@
-export const namespace = 'common/app';
+export const namespace:string = 'common/app';
 
 export const UPDATE_STATE = 'updateState';
 

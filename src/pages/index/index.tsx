@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import reduxComponent from '@src/common/redux/connect';
 import { ReduxComponentPageType } from '@src/common/redux/typings';
@@ -7,6 +7,7 @@ import { namespace } from './actions';
 
 const hello = 'hello world';
 const Index = (props: ReduxComponentPageType): JSX.Element => {
+  const ref = useRef<any>();
   useEffect(() => {
     if (props?.spinWrapper) {
       props.spinWrapper('timeout');
@@ -16,14 +17,20 @@ const Index = (props: ReduxComponentPageType): JSX.Element => {
   const now = Date.now();
   const [count, setCount] = useState(now);
   useEffect(() => {
-    const fn = () =>
-      setTimeout(() => {
+    const fn = (): void => {
+      ref.current = setTimeout(() => {
         const a = (Date.now() - now) / 1000;
         setCount(parseInt(`${a}`, 10));
         fn();
       }, 1000);
+    };
 
     fn();
+    return () => {
+      if (ref.current) {
+        clearTimeout(ref.current);
+      }
+    };
   }, []);
 
   return (

@@ -7,7 +7,7 @@ import {
   UsePromiseOptions,
   UsePromiseResult,
   UseSpinWrapperOptions,
-  UseSpinWrapperResult,
+  UseSpinWrapperResult
 } from './typings';
 
 export { useStore } from 'react-redux';
@@ -16,20 +16,21 @@ export const useDispatch = useDispatch2;
 
 export const useSelector = useSelector2;
 
-export const useSpinWrapper = function<T> (
+export const useSpinWrapper = function <T>(
   type: string,
   payload?: T,
-  options?: UseSpinWrapperOptions,
+  options?: UseSpinWrapperOptions
 ): UseSpinWrapperResult<T> {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state[CommonNamespace]?.spinLoading);
-  const spinWrapper = (param?: T): any => dispatch({
-    type: `${CommonNamespace}/${SPIN_WRAPPER}`,
-    payload: {
-      type,
-      param: { ...payload || {}, ...param || {} },
-    },
-  });
+  const spinWrapper = (param?: T): any =>
+    dispatch({
+      type: `${CommonNamespace}/${SPIN_WRAPPER}`,
+      payload: {
+        type,
+        param: { ...(payload || {}), ...(param || {}) }
+      }
+    });
 
   useEffect(() => {
     if (!options?.manual) {
@@ -40,24 +41,25 @@ export const useSpinWrapper = function<T> (
   return { loading, run: spinWrapper };
 };
 
-export const usePromise = function<T> (
+export const usePromise = function <T>(
   type: string,
   payload?: T,
-  options?: UsePromiseOptions,
+  options?: UsePromiseOptions
 ): UsePromiseResult<T> {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const promiseDispatch = (param?: T): Promise<any> => new Promise((resolve, reject) => {
-    dispatch({
-      type: `${CommonNamespace}/${PROMISE_DISPATCH}`,
-      payload: {
-        type,
-        param: { ...payload || {}, ...param || {} },
-        resolve,
-        reject,
-      },
+  const promiseDispatch = (param?: T): Promise<any> =>
+    new Promise((resolve, reject) => {
+      dispatch({
+        type: `${CommonNamespace}/${PROMISE_DISPATCH}`,
+        payload: {
+          type,
+          param: { ...(payload || {}), ...(param || {}) },
+          resolve,
+          reject
+        }
+      });
     });
-  });
   const run = async (param?: T): Promise<void> => {
     try {
       setLoading(true);
@@ -89,8 +91,8 @@ export const useReduxDispatch = (namespace: string): ReduxComponentTDispatchProp
         type: `${CommonNamespace}/${SPIN_WRAPPER}`,
         payload: {
           type: `${namespace}/${actionType}`,
-          param: payload,
-        },
+          param: payload
+        }
       });
     },
     promiseDispatch<T>(actionType: string, payload: T): Promise<any> {
@@ -101,25 +103,25 @@ export const useReduxDispatch = (namespace: string): ReduxComponentTDispatchProp
             type: `${namespace}/${actionType}`,
             param: payload,
             resolve,
-            reject,
-          },
+            reject
+          }
         });
       });
-    },
+    }
   };
 
   return dispatchToProps;
 };
 
-export const useReduxSelector = function<TState, TSelected> (
+export const useReduxSelector = function <TState, TSelected>(
   namespace: string,
   selector?: (res: TState & ReduxComponentTStateProps, state: any) => TSelected,
-  equalityFn?: (left: TSelected, right: TSelected) => boolean,
+  equalityFn?: (left: TSelected, right: TSelected) => boolean
 ): TSelected & ReduxComponentTStateProps {
   return useSelector<any, TSelected>((state) => {
     const res = {
       spinLoading: state[CommonNamespace].spinLoading,
-      ...state[namespace],
+      ...state[namespace]
     };
 
     if (selector) {

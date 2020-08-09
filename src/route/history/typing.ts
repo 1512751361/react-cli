@@ -1,17 +1,17 @@
 import {
   BrowserHistoryBuildOptions,
   HashHistoryBuildOptions,
-  MemoryHistoryBuildOptions,
+  MemoryHistoryBuildOptions
 } from 'history';
 
-export enum ETypeBuildOptions {
+export enum TypeBuildOptions {
   BROWSER = 'BROWSER',
   HASH = 'HASH',
   MEMORY = 'MEMORY'
 }
 
-export type IConfigBuildOptions = {
-  type: ETypeBuildOptions;
+export type ConfigBuildOptions = {
+  type?: TypeBuildOptions;
 } & BrowserHistoryBuildOptions &
   HashHistoryBuildOptions &
   MemoryHistoryBuildOptions;

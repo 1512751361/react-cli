@@ -1,7 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { namespace as CommonNamespace, PROMISE_DISPATCH, SPIN_WRAPPER } from '@src/actions/app';
-import { ReduxComponentPageType, ReduxComponentTStateProps, ReduxComponentTDispatchProps } from './typings';
+import {
+  ReduxComponentPageType,
+  ReduxComponentTStateProps,
+  ReduxComponentTDispatchProps
+} from './typings';
 
 /**
  * @description redux 高阶组件
@@ -15,26 +19,26 @@ const reduxComponent = function <
   TStateProps = {},
   TDispatchProps = {},
   TOwnProps = {}
-> (
+>(
   namespace: string,
   mapStateToProps?: (curentState: ChildProps, ownProps: TOwnProps, state: any) => TStateProps,
   mapDispatchToProps?: (
     dispatchToProps: ReduxComponentTDispatchProps,
-    ownProps: TOwnProps,
-  ) => TDispatchProps,
+    ownProps: TOwnProps
+  ) => TDispatchProps
 ): Function {
   return function (
     WrappedComponent: React.ComponentType<
       ReduxComponentPageType & ChildProps & TStateProps & TDispatchProps & TOwnProps
-    >,
+    >
   ): React.ComponentType<TOwnProps> {
     const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
     const TargetComponent: React.ComponentType<
       ReduxComponentPageType & ChildProps & TStateProps & TDispatchProps & TOwnProps
-    > = (
-      props: ReduxComponentPageType & ChildProps & TStateProps & TDispatchProps & TOwnProps,
-    ) => <WrappedComponent {...props} />;
+    > = (props: ReduxComponentPageType & ChildProps & TStateProps & TDispatchProps & TOwnProps) => (
+      <WrappedComponent {...props} />
+    );
 
     TargetComponent.displayName = `Hoc{${displayName}}`;
     return connect<
@@ -45,7 +49,7 @@ const reduxComponent = function <
       (state, ownProps: TOwnProps) => ({
         spinLoading: state[CommonNamespace].spinLoading,
         ...state[namespace],
-        ...mapStateToProps ? mapStateToProps(state[namespace], ownProps, state) : {},
+        ...(mapStateToProps ? mapStateToProps(state[namespace], ownProps, state) : {})
       }),
       (dispatch, ownProps: TOwnProps) => {
         const dispatchToProps = {
@@ -58,8 +62,8 @@ const reduxComponent = function <
               type: `${CommonNamespace}/${SPIN_WRAPPER}`,
               payload: {
                 type: `${namespace}/${actionType}`,
-                param: payload,
-              },
+                param: payload
+              }
             });
           },
           promiseDispatch<T>(actionType: string, payload: T): Promise<any> {
@@ -70,18 +74,18 @@ const reduxComponent = function <
                   type: `${namespace}/${actionType}`,
                   param: payload,
                   resolve,
-                  reject,
-                },
+                  reject
+                }
               });
             });
-          },
+          }
         };
 
         return {
           ...dispatchToProps,
-          ...mapDispatchToProps ? mapDispatchToProps(dispatchToProps, ownProps) : {},
+          ...(mapDispatchToProps ? mapDispatchToProps(dispatchToProps, ownProps) : {})
         };
-      },
+      }
     )<any>(TargetComponent);
   };
 };

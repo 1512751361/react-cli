@@ -26,7 +26,10 @@ module.exports = {
 
   // 一组glob模式，指示应为其收集覆盖率信息的一组文件
   collectCoverageFrom: [
-    '**/src/**/*.{js,jsx,ts,tsx}', '!**/node_modules/**', '!**/vendor/**',
+    '**/src/**/*.{js,jsx,ts,tsx}',
+    '**/route/**/*.{js,jsx,ts,tsx}',
+    '!**/node_modules/**',
+    '!**/vendor/**'
   ],
 
   // Jest输出覆盖信息文件的目录
@@ -51,8 +54,8 @@ module.exports = {
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: -10,
-    },
+      statements: -10
+    }
   },
 
   // 自定义依赖项提取程序的路径
@@ -97,7 +100,7 @@ module.exports = {
     '^@pages(.*)$': '<rootDir>/src/pages$1',
     '^@util(.*)$': '<rootDir>/src/util$1',
     '^@common(.*)$': '<rootDir>/src/common$1',
-    '^@components(.*)$': '<rootDir>/src/components$1',
+    '^@components(.*)$': '<rootDir>/src/components$1'
   },
 
   // 一个regexp模式字符串数组，与模块加载程序认为“可见”之前的所有模块路径匹配
@@ -160,9 +163,7 @@ module.exports = {
   testLocationInResults: true,
 
   // Jest用来检测测试文件的glob模式
-  testMatch: [
-    '**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)',
-  ],
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
 
   // 与所有测试路径匹配的regexp模式字符串数组，将跳过匹配的测试
   // testPathIgnorePatterns: [
@@ -188,7 +189,7 @@ module.exports = {
   transform: {
     // 将.js后缀的文件使用babel-jest处理
     '^.+\\.js$': 'babel-jest',
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(ts|tsx)$': 'ts-jest'
   },
 
   // 与所有源文件路径匹配的regexp模式字符串数组，匹配的文件将跳过转换
@@ -199,7 +200,7 @@ module.exports = {
   // unmockedModulePathPatterns: undefined,
 
   // 指示是否应在运行期间报告每个单独的测试
-  verbose: true,
+  verbose: true
 
   // 在监视模式下重新运行测试之前，与所有源文件路径匹配的regexp模式数组
   // watchPathIgnorePatterns: [],

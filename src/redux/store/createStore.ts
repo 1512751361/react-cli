@@ -1,8 +1,3 @@
-/* eslint-disable global-require */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable no-process-env */
 import {
   applyMiddleware,
   createStore,
@@ -38,7 +33,7 @@ export default function ({ reducers, initialState, sagas }: CreateStoreBuildOpti
     }
   }
 
-  /** ===  添加中间件 ====**/
+  /** ===  添加中间件 ==== */
   const middlewares: Middleware[] = [];
 
   if (process.env.NODE_ENV === 'development') {

@@ -1,3 +1,5 @@
+const fabric = require('@umijs/fabric');
+
 /**
  * @description ESLint 包含了一些代码格式的检查，比如空格、分号等。但前端社区中有一个更先进的工具可以用来格式化代码，那就是 Prettier。
  * @description Prettier 聚焦于代码的格式化，通过语法分析，重新整理代码的格式，让所有人的代码都保持同样的风格
@@ -6,6 +8,7 @@
  * @example {}
  */
 module.exports = {
+  ...fabric.prettier,
   // 一行最多 100 字符
   printWidth: 100,
   // 使用 2 个空格缩进

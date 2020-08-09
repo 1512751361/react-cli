@@ -47,4 +47,3 @@ export const importDynamicRedux = function (): Array<Model<object, object, objec
   }), []);
 };
 
-export default importDynamicRedux;

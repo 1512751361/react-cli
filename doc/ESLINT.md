@@ -133,7 +133,7 @@
       'comma-dangle': ['error', 'always-multiline'],
       'no-control-regex': 2, // 禁止在正则表达式中使用控制字符 ：new RegExp("\x1f")
       'linebreak-style': ['error', 'unix'], // 此规则强制执行统一的行结尾，而不受操作系统，VCS 或整个代码库中使用的编辑器的影响
-      indent: [2, 2], // 空格4个
+      indent: ['error', 2, { SwitchCase: 1 }], // 空格2个
       'array-bracket-spacing': 2, // 指定数组的元素之间要以空格隔开(,后面)
       'brace-style': [2, '1tbs', { allowSingleLine: true }], // if while function 后面的{必须与if在同一行，java风格。
       'no-irregular-whitespace': 2, // 不规则的空白不允许
@@ -172,7 +172,7 @@
       // return规则强制在数组方法的回调中使用语句
       'array-callback-return': 'error',
       // 该规则强制数组元素之间的换行符。使用多行强制换行，单行不换行
-      'array-element-newline': ['error', { "multiline": true }],
+      'array-element-newline': ['error', { multiline: true }],
       // 变量在定义块的外部使用时，规则会生成警告。这模拟了C风格的块范围。
       'block-scoped-var': 'error',
       // 规则在打开的块令牌内和同一行上的下一个令牌内强制执行一致的间距。此规则还会在同一行中的关闭块标记和以前的标记内强制实施一致的间距。
@@ -194,7 +194,7 @@
       // 控制逗号在行尾出现还是在行首出现
       'comma-style': [2, 'last'],
       // 圈复杂度
-      complexity: [2, 9],
+      complexity: [2, 12],
       // 以方括号取对象属性时，[ 后面和 ] 前面是否需要空格, 可选参数 never, always
       'computed-property-spacing': [2, 'never'],
       // 强制方法必须返回值，TypeScript强类型，不配置
@@ -346,7 +346,7 @@
       ],
 
       //
-      'padded-blocks': 2,
+      'padded-blocks': 0,
       // 此规则旨在标记使用let关键字声明的变量，但在初始分配后从未重新分配变量
       'prefer-const': 2,
 
@@ -408,6 +408,9 @@
    ```
    {
       'jsx-quotes': [2, 'prefer-double'], //强制在JSX属性（jsx-quotes）中一致使用双引号
+      'jsx-a11y/click-events-have-key-events': 0,
+      'jsx-a11y/no-noninteractive-element-interactions': 0,
+      'react/jsx-props-no-spreading': 0,
       'react/display-name': 2, // 防止在React组件定义中丢失displayName
       'react/forbid-prop-types': [2, { forbid: ['any'] }], // 禁止某些propTypes
       'react/jsx-boolean-value': 2, // 在JSX中强制布尔属性符号
@@ -418,7 +421,7 @@
       'react/jsx-key': 2, // 在数组或迭代器中验证JSX具有key属性
       'react/jsx-no-bind': 0, // JSX中不允许使用箭头函数和bind
       'react/jsx-no-duplicate-props': 2, // 防止在JSX中重复的props
-      'react/jsx-no-literals': 2, // 防止使用未包装的JSX字符串
+      'react/jsx-no-literals': 1, // 防止使用未包装的JSX字符串
       'react/jsx-no-undef': 2, // 在JSX中禁止未声明的变量
       'react/jsx-pascal-case': 2, // 为用户定义的JSX组件强制使用PascalCase
       'react/jsx-uses-react': 2, // 防止反应被错误地标记为未使用
@@ -448,12 +451,15 @@
       'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.tsx'] }],
       // 不区分是否是 无状态组件
       'react/prefer-stateless-function': 2,
-      'jsx-a11y/click-events-have-key-events': 2,
-      'jsx-a11y/no-noninteractive-element-interactions': 2,
-      'import/no-unresolved': 2,
+      'import/no-extraneous-dependencies': 2,
+      'import/prefer-default-export': 1,
+      'import/no-unresolved': [
+        2,
+        { ignore: ['^@src', '^@pages', '^@util', '^@common', '^@components'] }
+      ],
       'import/extensions': [
         'error',
-        'ignorePackages',
+        'always',
         {
           js: 'never',
           jsx: 'never',
@@ -461,7 +467,7 @@
           tsx: 'never'
         }
       ],
-      "import/newline-after-import": 2,
+      'import/newline-after-import': 2,
    }
    ```
 
@@ -483,8 +489,76 @@
       'new-parens': 2,
       // 此规则强制执行，其中空线都需要或禁止后一种编码风格var，let或const语句来实现整个项目一致的编码风格。
       'newline-after-var': 2,
+      'switch-colon-spacing': ['error', { after: true, before: false }],
    }
    ```
+
+4. 其他相关
+
+  ```
+  {
+      // 只要求自定义的方法设置返回类型
+      '@typescript-eslint/explicit-function-return-type': [
+        2,
+        {
+          allowExpressions: true
+        }
+      ],
+      // any类型时的警告报错
+      '@typescript-eslint/no-explicit-any': 1,
+      // 关闭接口不能以 I 为前缀
+      '@typescript-eslint/interface-name-prefix': 0
+  }
+  ```
+
+### Prettier 格式化配置
+
+  ```
+    /**
+    * @description ESLint 包含了一些代码格式的检查，比如空格、分号等。但前端社区中有一个更先进的工具可以用来格式化代码，那就是 Prettier。
+    * @description Prettier 聚焦于代码的格式化，通过语法分析，重新整理代码的格式，让所有人的代码都保持同样的风格
+    * @description Prettier 安装 npm install --save-dev prettier
+    * @description VSCode 中的 Prettier 插件，然后修改 .vscode/settings.json
+    * @example {}
+    */
+    module.exports = {
+      // 一行最多 100 字符
+      printWidth: 100,
+      // 使用 2 个空格缩进
+      tabWidth: 2,
+      // 不使用缩进符，而使用空格
+      useTabs: false,
+      // 行尾需要有分号
+      semi: true,
+      // 使用单引号
+      singleQuote: true,
+      // 对象的 key 仅在必要时用引号
+      quoteProps: 'as-needed',
+      // jsx 不使用单引号，而使用双引号
+      jsxSingleQuote: true,
+      // 末尾不需要逗号
+      trailingComma: 'none',
+      // 大括号内的首尾需要空格
+      bracketSpacing: true,
+      // jsx 标签的反尖括号需要换行
+      jsxBracketSameLine: true,
+      // 箭头函数，只有一个参数的时候，也需要括号
+      arrowParens: 'always',
+      // 每个文件格式化的范围是文件的全部内容
+      rangeStart: 0,
+      rangeEnd: Infinity,
+      // 不需要写文件开头的 @prettier
+      requirePragma: false,
+      // 不需要自动在文件开头插入 @prettier
+      insertPragma: false,
+      // 使用默认的折行标准
+      proseWrap: 'preserve',
+      // 根据显示样式决定 html 要不要折行
+      htmlWhitespaceSensitivity: 'css',
+      // 换行符使用 lf
+      endOfLine: 'lf'
+    };
+  ```
 
 ### `vscode` 中添加 `eslint` 插件
 

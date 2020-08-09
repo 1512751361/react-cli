@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const webpack = require('webpack');
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -23,7 +21,7 @@ module.exports = {
   output: {
     filename: '[name].[hash:8].js',
     path: path.resolve(__dirname, '..', 'dist'),
-    publicPath: '/',
+    publicPath: '/'
   },
   // 加载资源
   module: {
@@ -53,17 +51,20 @@ module.exports = {
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: [
-              '@babel/plugin-transform-runtime', '@babel/plugin-proposal-object-rest-spread', '@babel/plugin-proposal-class-properties', '@babel/plugin-syntax-dynamic-import',
-            ],
-          },
-        },
+              '@babel/plugin-transform-runtime',
+              '@babel/plugin-proposal-object-rest-spread',
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-syntax-dynamic-import'
+            ]
+          }
+        }
       },
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'ts-loader',
-        },
+          loader: 'ts-loader'
+        }
       },
       // 加载图片
       {
@@ -73,10 +74,10 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              outputPath: 'static/img/',
-            },
-          },
-        ],
+              outputPath: 'static/img/'
+            }
+          }
+        ]
       },
       // 加载字体
       {
@@ -87,12 +88,12 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              outputPath: 'static/fonts/',
-            },
-          },
-        ],
-      },
-    ],
+              outputPath: 'static/fonts/'
+            }
+          }
+        ]
+      }
+    ]
   },
   // 解析模块请求的选项
   // （不适用于对 loader 解析）
@@ -103,24 +104,25 @@ module.exports = {
     extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
     // 模块别名列表
     alias: {
+      '@config': path.resolve(__dirname, '..', 'config'),
       '@util': path.resolve(__dirname, '..', 'src/util'),
       '@common': path.resolve(__dirname, '..', 'src/common'),
       '@components': path.resolve(__dirname, '..', 'src/components'),
       '@pages': path.resolve(__dirname, '..', 'src/pages'),
-      '@src': path.resolve(__dirname, '..', 'src'),
-    },
+      '@src': path.resolve(__dirname, '..', 'src')
+    }
   },
   // 告知 webpack 为目标(target)指定一个环境
   target: 'web',
   // 防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖(external dependencies)
   externals: {
-    jquery: 'jQuery,',
+    jquery: 'jQuery,'
   },
   // 配置如何展示性能提示
   performance: {
     // 定一个创建后超过 500kb 的资源，将展示一条警告
     maxAssetSize: 1024 * 500,
-    maxEntrypointSize: 1024 * 500,
+    maxEntrypointSize: 1024 * 500
   },
   // 添加插件
   optimization: {
@@ -135,13 +137,13 @@ module.exports = {
             'default',
             {
               discardComments: {
-                removeAll: true,
+                removeAll: true
               },
-              normalizeUnicode: false,
-            },
-          ],
+              normalizeUnicode: false
+            }
+          ]
         },
-        canPrint: true,
+        canPrint: true
       }),
       new TerserPlugin({
         terserOptions: {
@@ -151,12 +153,12 @@ module.exports = {
             drop_console: true,
             drop_debugger: false,
             // 移除console
-            pure_funcs: ['console.log'],
-          },
+            pure_funcs: ['console.log']
+          }
         },
         sourceMap: false,
-        parallel: true,
-      }),
+        parallel: true
+      })
     ],
     // 代码分离
     splitChunks: {
@@ -180,39 +182,39 @@ module.exports = {
       cacheGroups: {
         styles: {
           name: 'static/css/chunk-styles',
-          test: /\.(css|scss|sass)$/,
+          test: /\.(css|scss|sass|less)$/,
           chunks: 'all',
-          enforce: true,
+          enforce: true
         },
         commons: {
           name: 'static/js/chunk-commons',
           test: path.join(__dirname, '..', 'src/components'),
           minChunks: 3,
           priority: 5,
-          reuseExistingChunk: true,
+          reuseExistingChunk: true
         },
         react: {
           test: /[\\/]node_modules[\\/](react)[\\/]/,
           name: 'static/js/chunk-react',
-          priority: 20,
+          priority: 20
         },
         reactDom: {
           test: /[\\/]node_modules[\\/](react-dom)[\\/]/,
           name: 'static/js/chunk-react-dom',
-          priority: 20,
+          priority: 20
         },
         vendors: {
           name: 'static/js/chunk-libs',
           test: /[\\/]node_modules[\\/]/,
-          priority: 10,
+          priority: 10
         },
         default: {
           minChunks: 2,
           priority: -20,
-          reuseExistingChunk: true,
-        },
-      },
-    },
+          reuseExistingChunk: true
+        }
+      }
+    }
   },
   // 添加插件
   plugins: [
@@ -229,13 +231,13 @@ module.exports = {
         // 删除双引号
         removeAttributeQuotes: true,
         // 折叠 html 为一行
-        collapseWhitespace: true,
-      },
+        collapseWhitespace: true
+      }
     }),
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[hash:8].css',
-      chunkFilename: 'static/css/[id].[hash:8].css',
-    }),
+      chunkFilename: 'static/css/[id].[hash:8].css'
+    })
     // new BundleAnalyzerPlugin(),
-  ],
+  ]
 };

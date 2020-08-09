@@ -1,11 +1,12 @@
 import * as history from 'history';
-import { HistoryUtil, historyUtil } from '@util/history';
-import { ETypeBuildOptions } from '@src/util/history/typings';
+import HistoryUtil from '@src/route/history/History';
+import { historyUtil } from '@src/route/history';
+import { TypeBuildOptions } from '@src/route/history/typing';
 
 jest.mock('history');
 
 describe('test util history', () => {
-  it('historyUtil to be instanceOf HistoryUtil',()=>{
+  it('historyUtil to be instanceOf HistoryUtil', () => {
     // 使用 .toBeInstanceOf(Class) 检查对象是一个类的实例
     expect(historyUtil).toBeInstanceOf(HistoryUtil);
   });
@@ -20,12 +21,12 @@ describe('test util history', () => {
     expect(history.createBrowserHistory).toHaveBeenCalledTimes(2);
   });
 
-  it('historyUtil history toEqual createBrowserHistory',()=>{
-    expect(history.createBrowserHistory()).toEqual(historyUtil.history)
+  it('historyUtil history toEqual createBrowserHistory', () => {
+    expect(history.createBrowserHistory()).toEqual(historyUtil.history);
   });
-  
+
   it('history default config createHashHistory', () => {
-    const config = { type: ETypeBuildOptions.HASH };
+    const config = { type: TypeBuildOptions.HASH };
     const historyUtil = new HistoryUtil(config);
     // 模拟函数被调用的准确次数
     expect(history.createHashHistory).toHaveBeenCalled();
@@ -39,14 +40,14 @@ describe('test util history', () => {
     expect(history.createHashHistory).toHaveBeenCalledWith(config);
   });
 
-  it('historyUtil history toEqual createHashHistory',()=>{
-    const config = { type: ETypeBuildOptions.HASH };
+  it('historyUtil history toEqual createHashHistory', () => {
+    const config = { type: TypeBuildOptions.HASH };
     const historyUtil = new HistoryUtil(config);
-    expect(history.createHashHistory()).toEqual(historyUtil.history)
+    expect(history.createHashHistory()).toEqual(historyUtil.history);
   });
 
   it('history default config createMemoryHistory', () => {
-    const config = { type: ETypeBuildOptions.MEMORY };
+    const config = { type: TypeBuildOptions.MEMORY };
     const historyUtil = new HistoryUtil(config);
     // 模拟函数被调用的准确次数
     expect(history.createMemoryHistory).toHaveBeenCalled();
@@ -60,9 +61,9 @@ describe('test util history', () => {
     expect(history.createMemoryHistory).toHaveBeenCalledWith(config);
   });
 
-  it('historyUtil history toEqual createMemoryHistory',()=>{
-    const config = { type: ETypeBuildOptions.MEMORY };
+  it('historyUtil history toEqual createMemoryHistory', () => {
+    const config = { type: TypeBuildOptions.MEMORY };
     const historyUtil = new HistoryUtil(config);
-    expect(history.createMemoryHistory()).toEqual(historyUtil.history)
+    expect(history.createMemoryHistory()).toEqual(historyUtil.history);
   });
 });

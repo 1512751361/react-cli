@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack');
@@ -10,7 +9,6 @@ const baseConfig = require('./webpack.base');
 const { stage } = require('../config/process.env');
 
 const config = {
-
   /**
    * 告知 webpack 使用相应模式的内置优化
    * [ 会将 process.env.NODE_ENV 的值设置为 production。 启用
@@ -27,7 +25,7 @@ const config = {
   // 配置如何展示性能提示
   performance: {
     // 定一个创建超过 250kb 的资源，将展示一条错误
-    hints: 'error',
+    hints: 'error'
   },
   // 加载资源
   module: {
@@ -40,13 +38,13 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              modules: false,
-            },
-          },
-        ],
+              modules: false
+            }
+          }
+        ]
       },
       {
-        test: /\.(css|scss|sass)$/,
+        test: /\.(css|scss|sass|less)$/,
         exclude: /node_modules/,
         use: [
           MiniCssExtractPlugin.loader,
@@ -54,8 +52,8 @@ const config = {
             loader: 'css-loader',
             options: {
               modules: true,
-              importLoaders: 2,
-            },
+              importLoaders: 2
+            }
           },
           {
             loader: 'postcss-loader',
@@ -64,28 +62,28 @@ const config = {
               plugins: [
                 require('postcss-import')(),
                 require('autoprefixer')({
-                  overrideBrowserslist: ['last 30 versions', '> 2%', 'Firefox >= 10', 'ie 6-11'],
-                }),
-              ],
-            },
+                  overrideBrowserslist: ['last 30 versions', '> 2%', 'Firefox >= 10', 'ie 6-11']
+                })
+              ]
+            }
           },
           {
-            loader: 'sass-loader',
+            loader: 'less-loader',
             options: {
-              sourceMap: false,
-            },
-          },
-        ],
-      },
-    ],
+              sourceMap: false
+            }
+          }
+        ]
+      }
+    ]
   },
   // 插件
   plugins: [
     new webpack.HashedModuleIdsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.BASE_API': JSON.stringify(stage.BASE_API),
-    }),
-  ],
+      'process.env.BASE_API': JSON.stringify(stage.BASE_API)
+    })
+  ]
 };
 
 module.exports = merge(baseConfig, config);
