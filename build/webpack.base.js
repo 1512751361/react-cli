@@ -151,9 +151,9 @@ module.exports = {
             warnings: false,
             // console
             drop_console: true,
-            drop_debugger: false,
+            drop_debugger: false
             // 移除console
-            pure_funcs: ['console.log']
+            // pure_funcs: ['console.log']
           }
         },
         sourceMap: false,

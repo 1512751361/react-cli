@@ -2,6 +2,7 @@ import * as sagaEffects from 'redux-saga/effects';
 import { Saga } from 'redux-saga';
 import { PutEffect, TakeEffect } from 'redux-saga/effects';
 import {
+  ModelEffectsFunction,
   ModelEffects,
   ModelAction,
   ModelReducer,
@@ -31,13 +32,7 @@ const prefixReducer = function <State, Payload>(
 
 const prefixType = (
   type: string,
-  model: Model<
-    any,
-    any,
-    {
-      [key: string]: ModelEffects<any>;
-    }
-  >
+  model: Model<any, any, { [key: string]: ModelEffects<any> }>
 ): string => {
   const prefixedType = `${model.namespace}/${type}`;
   const typeWithoutAffix = `${type}`.replace(/\/@@[^/]+?$/, '');
@@ -53,13 +48,7 @@ const prefixType = (
 };
 
 const createEffects = function (
-  model: Model<
-    any,
-    any,
-    {
-      [key: string]: ModelEffects<any>;
-    }
-  >
+  model: Model<any, any, { [key: string]: ModelEffects<any> }>
 ): EffectsCallback {
   const put = (action: ModelAction<any>): PutEffect => {
     const { type } = action;
@@ -137,15 +126,9 @@ export const createReducer = function <State, Payload>(
 const getWatcher = function <T>(
   key: string,
   effects: ModelEffects<T>,
-  model: Model<
-    any,
-    any,
-    {
-      [key: string]: ModelEffects<T>;
-    }
-  >
+  model: Model<any, any, { [key: string]: ModelEffects<any> }>
 ): Saga {
-  let effect = effects;
+  let effect: ModelEffectsFunction<T> = () => {};
   let type = 'takeEvery';
   let opts;
 
@@ -154,17 +137,21 @@ const getWatcher = function <T>(
     if (opts && opts.type) {
       type = opts.type;
     }
+  } else {
+    effect = effects;
   }
   function* sagaWithCatch(action: ModelAction<T>): Generator {
     yield sagaEffects.put({ type: `${key}/@@start` });
     try {
       yield effect(action, createEffects(model));
+      yield sagaEffects.put({ type: `${key}/@@end` });
     } catch (error) {
       console.log(error);
     }
-    yield sagaEffects.put({ type: `${key}/@@end` });
   }
   switch (type) {
+    case 'watcher':
+      return sagaWithCatch;
     case 'takeLatest':
       return function* () {
         yield sagaEffects.takeLatest(key, sagaWithCatch);
@@ -185,13 +172,7 @@ const getWatcher = function <T>(
  */
 export const makeSagaCreator = function <T>(
   namespace: string,
-  model: Model<
-    any,
-    any,
-    {
-      [key: string]: ModelEffects<T>;
-    }
-  >,
+  model: Model<any, any, { [key: string]: ModelEffects<any> }>,
   effects?: {
     [key: string]: ModelEffects<T>;
   }
@@ -200,17 +181,18 @@ export const makeSagaCreator = function <T>(
     if (!effects) {
       return;
     }
-    yield Object.keys(effects).forEach(function* (key: string) {
+    const effectKeys: string[] = Object.keys(effects);
+    while (effectKeys?.length) {
+      const key: string = effectKeys.shift() as string;
       if (Object.prototype.hasOwnProperty.call(effects, key)) {
         const watcher = getWatcher(`${namespace}/${key}`, effects[key], model);
         const task: any = yield sagaEffects.fork(watcher);
-
         // ${namespace}/@@CANCEL_EFFECTS 取消该命名空间内的所有saga
         yield sagaEffects.fork(function* () {
           yield sagaEffects.take(`${namespace}/@@CANCEL_EFFECTS`);
           yield sagaEffects.cancel(task);
         });
       }
-    });
+    }
   };
 };

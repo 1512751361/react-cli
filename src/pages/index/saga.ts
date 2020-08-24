@@ -1,4 +1,5 @@
 import { ModelSagas } from '@src/redux/typings';
+import pollingEffect from '@src/util/pollingEffect';
 
 interface Sagas {
   login: {
@@ -11,33 +12,49 @@ interface Sagas {
     resolve: Function;
     reject: Function;
   };
+  watch: any;
 }
-
-const delay = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 1000 * 5));
-
 const sagas: ModelSagas<Sagas> = {
-  * login({ payload }, { put, call, take }) {
+  *login({ payload }, { put, take, delay }) {
     console.log('login:', payload, 1);
     yield put({ type: 'timeout' });
     yield take('timeout/@@end');
     console.log('login', 'ff', 2);
-    yield call(delay);
+    yield delay(1000 * 5);
     console.log('login', 'ff', 3);
     yield 1;
   },
-  * timeout({ payload }, { call, put }) {
+  *timeout({ payload }, { delay, put }) {
     console.log('timeout', payload, 4);
-    yield call(delay);
-    yield call(delay);
+    yield delay(1000 * 5);
+    yield delay(1000 * 5);
     console.log('timeout', payload, 5);
     yield 1;
     yield put({
       type: 'updateState',
       payload: {
-        visibilityFilter: 'visibilityFilter',
-      },
+        visibilityFilter: 'visibilityFilter'
+      }
     });
   },
+  // *watch(_, { delay }) {
+  //   try {
+  //     console.log('watch');
+  //     while (true) {
+  //       const res = yield delay(1000 * 2);
+  //       console.log('while', res);
+  //     }
+  //   } catch (error) {
+  //     console.log('error', error);
+  //   } finally {
+  //     console.log('finally');
+  //     yield delay(1000 * 5);
+  //   }
+  // },
+  watch: pollingEffect<any>(function* (_, { delay }) {
+    yield delay(1000 * 2);
+    console.log('watch ....');
+  })
 };
 
 export default sagas;

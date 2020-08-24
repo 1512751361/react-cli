@@ -13,7 +13,7 @@ export const importDynamicRedux = function (): Array<Model<object, object, objec
   const resolve = require.context(
     '../../src',
     true,
-    /((reducers|sagas)\/.+|\/(reducer|saga))\.[jt]s$/,
+    /((reducers|sagas)\/.+|\/(reducer|saga))\.[jt]s$/
   );
 
   resolve.keys().forEach((key: string) => {
@@ -25,11 +25,15 @@ export const importDynamicRedux = function (): Array<Model<object, object, objec
     if (!models[basename]) {
       models[basename] = {
         namespace: basename,
-        state: {},
+        state: {}
       };
     }
 
-    if (key.startsWith('./reducers') || key.endsWith('/reducer.ts') || key.endsWith('/reducer.js')) {
+    if (
+      key.startsWith('./reducers') ||
+      key.endsWith('/reducer.ts') ||
+      key.endsWith('/reducer.js')
+    ) {
       const namespace: string = resolve(key).namespace || basename;
       const initialState = resolve(key).initialState || {};
 
@@ -40,10 +44,13 @@ export const importDynamicRedux = function (): Array<Model<object, object, objec
       models[basename].effects = resolve(key).default;
     }
   });
-  return Object.keys(models).reduce<Model<object, object, object>[]>((res, key) => res.concat({
-    ...models[key],
-    reducers: createReducer(models[key].namespace, models[key].state, models[key].reducers),
-    effects: makeSagaCreator(models[key].namespace, models[key], models[key].effects),
-  }), []);
+  return Object.keys(models).reduce<Model<object, object, object>[]>(
+    (res, key) =>
+      res.concat({
+        ...models[key],
+        reducers: createReducer(models[key].namespace, models[key].state, models[key].reducers),
+        effects: makeSagaCreator(models[key].namespace, models[key], models[key].effects)
+      }),
+    []
+  );
 };
-

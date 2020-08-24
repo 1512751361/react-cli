@@ -1,5 +1,5 @@
 import { Action, AnyAction } from 'redux';
-import { PutEffect } from 'redux-saga/effects';
+import { PutEffect, CallEffect } from 'redux-saga/effects';
 
 type Reducer<S, A extends Action = AnyAction> = (state: S, action: A) => S;
 
@@ -42,12 +42,21 @@ export interface EffectsCallback {
 
   race: Function;
   all: Function;
+  delay: <T = true>(ms: number, val?: T) => CallEffect<T>;
 }
 
-export type ModelEffects<Payload> = (
+export interface ModelEffectsOptions {
+  type: 'takeEvery' | 'takeLatest' | 'watcher';
+}
+
+export type ModelEffectsFunction<Payload> = (
   action: ModelAction<Payload>,
   effects: EffectsCallback
 ) => void;
+
+export type ModelEffects<Payload> =
+  | ModelEffectsFunction<Payload>
+  | [ModelEffectsFunction<Payload>, ModelEffectsOptions];
 
 export type ModelSagas<T> = {
   [P in keyof T]: ModelEffects<T[P]>;

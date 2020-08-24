@@ -12,6 +12,9 @@ const Index = (props: ReduxComponentPageType): JSX.Element => {
     if (props?.spinWrapper) {
       props.spinWrapper('timeout');
     }
+    if (props.emit) {
+      props.emit('watch');
+    }
   }, []);
   const [loading, setLoading] = useState(false);
   const now = Date.now();
